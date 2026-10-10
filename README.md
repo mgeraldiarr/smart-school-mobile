@@ -3,7 +3,7 @@
 * **Mata Kuliah:** Pemrograman Mobile
 * **Dosen:** BAYU SULISTIYANTO IPUNG SUTEJO, S.Kom., M.Kom
 * **Kelompok:** Kelompok 7 (Kelas KH002)
-* **Pengembangankan:** Smart School: Sistem Absensi Wajah & Monitoring Siswa (SMP & SMA)
+* **Mengembangankan Proyek:** Smart School: Sistem Absensi Wajah & Monitoring Siswa (SMP & SMA)
 * **Institusi:** Universitas Esa Unggul / Fakultas Ilmu Komputer
 
 ## 👥 Team Pengembangan
