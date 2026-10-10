@@ -1,3 +1,14 @@
+## Informasi Akademik 
+
+* **Mata Kuliah:** Pemrograman Mobile
+* **Dosen:** BAYU SULISTIYANTO IPUNG SUTEJO, S.Kom., M.Kom
+* **Kelompok:** Kelompok 7 (Kelas KH002)
+* **Pengembangankan:** Smart School: Sistem Absensi Wajah & Monitoring Siswa (SMP & SMA)
+* **Institusi:** Universitas Esa Unggul / Fakultas Ilmu Komputer
+
+## 👥 Team Pengembangan
+* Muhammad Geraldi Arisyi : Sebagai Fullstack Mobile Developer
+
 # 🎓 Smart School: Sistem Absensi Wajah & Monitoring Siswa (SMP & SMA)
 
 [![Flutter](https://img.shields.io/badge/Flutter-3.47.4-02569B?logo=flutter&logoColor=white)](https://flutter.dev)
@@ -229,9 +240,3 @@ Jika anggota tim mengerjakan dari rumah masing-masing:
 
 ---
 
-## 👥 8. Informasi Tim & Pengembang
-
-* **Mata Kuliah:** Pemrograman Mobile
-* **Kelompok:** Kelompok 7 (Kelas KH002)
-* **Ketua / Pengembang Utama:** Muhammad Geraldi Arisyi (`geraldiarisyi27@gmail.com`)
-* **Institusi:** Universitas Esa Unggul / Fakultas Ilmu Komputer
