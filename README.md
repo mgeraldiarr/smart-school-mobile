@@ -8,6 +8,7 @@
 
 ## 👥 Team Pengembangan
 * Muhammad Geraldi Arisyi : Sebagai Fullstack Mobile Developer
+* Rafi Maulana Saputra : Sebagai Backend Developer
 
 # 🎓 Smart School: Sistem Absensi Wajah & Monitoring Siswa (SMP & SMA)
 
