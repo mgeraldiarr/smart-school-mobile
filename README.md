@@ -10,6 +10,8 @@
 * Muhammad Geraldi Arisyi : Sebagai Fullstack Mobile Developer
 * Rafi Maulana Saputra : Sebagai Fullstack Mobile Developer
 * Bintang Saputra : Sebagai Fullstack Mobile Developer
+* Muhammad Naufal Al Ali : Sebagai Fullstack Mobile Developer
+
 
 # 🎓 Smart School: Sistem Absensi Wajah & Monitoring Siswa (SMP & SMA)
 
