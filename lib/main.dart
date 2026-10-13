@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-// Import file absensi_manual.dart yang ada di folder page10
-import 'package:smart_school_mobile/page10/absensi_manual.dart';
+// Ganti import ke folder page11
+import 'package:smart_school_mobile/page11/daftar_kehadiran.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,8 +14,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Smart School Mobile',
-      // Panggil class AbsensiManualPage di sini
-      home: const AbsensiManualPage(),
+      // Panggil class DaftarKehadiranPage dari page11 di sini
+      home: const DaftarKehadiranPage(),
     );
   }
 }
