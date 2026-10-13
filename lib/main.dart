@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-// Import file jadwal_pelajaran.dart yang ada di folder page12
-import 'package:smart_school_mobile/page12/jadwal_pelajaran.dart';
+// Import file nilai_siswa_page.dart dari folder page13
+import 'package:smart_school_mobile/page13/nilai_siswa_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,8 +14,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Smart School Mobile',
-      // Panggil class JadwalPelajaranPage di sini
-      home: const JadwalPelajaranPage(),
+      // Panggil class NilaiSiswaPage sebagai halaman utama
+      home: const NilaiSiswaPage(),
     );
   }
 }

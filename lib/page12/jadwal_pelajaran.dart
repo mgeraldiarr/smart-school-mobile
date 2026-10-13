@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+// Import halaman Nilai Siswa dari page13 (sesuaikan jalur folder/file kamu)
+import 'package:smart_school_mobile/page13/nilai_siswa_page.dart';
 
 // Model untuk Data Mata Pelajaran
 class Lesson {
@@ -36,54 +38,43 @@ class JadwalPelajaranPage extends StatefulWidget {
 }
 
 class _JadwalPelajaranPageState extends State<JadwalPelajaranPage> {
-  // Indeks hari yang sedang dipilih (Default 0 = Senin, 5 Oktober)
   int _selectedDayIndex = 0;
-  int _bottomNavIndex = 1; // Tab Jadwal aktif di bottom nav
+  int _bottomNavIndex = 1; // Tab Jadwal aktif (indeks 1)
 
   // Data Dummy Berbeda Tiap Hari
   final List<DayScheduleModel> _weeklySchedules = [
-    // Senin, 5 Oktober
     DayScheduleModel(
       dayName: "Sen",
       dateNum: "5",
       lessons: [
         Lesson(time: "07.00 - 08.30", subject: "Matematika", teacher: "Pak Ahmad", status: "Mengajar"),
-        Lesson(time: "08.30 - 10.00", subject: "IPA", teacher: "Bu Siti", status: "Mengajar"),
-        Lesson(time: "10.15 - 11.45", subject: "Bahasa Indonesia", teacher: "Pak Budi", status: "Berhalangan"),
-        Lesson(time: "12.30 - 14.00", subject: "Bahasa Inggris", teacher: "Bu Rina", status: "Terjadwal"),
+        Lesson(time: "08.30 - 09.30", subject: "Bahasa Indonesia", teacher: "Pak Budi", status: "Mengajar"),
       ],
     ),
-    // Selasa, 6 Oktober
     DayScheduleModel(
       dayName: "Sel",
       dateNum: "6",
       lessons: [
         Lesson(time: "07.00 - 08.30", subject: "PPKn", teacher: "Pak Joko", status: "Mengajar"),
         Lesson(time: "08.30 - 10.00", subject: "IPS Terpadu", teacher: "Bu Ani", status: "Mengajar"),
-        Lesson(time: "10.15 - 11.45", subject: "Matematika", teacher: "Pak Ahmad", status: "Terjadwal"),
       ],
     ),
-    // Rabu, 7 Oktober
     DayScheduleModel(
       dayName: "Rab",
       dateNum: "7",
       lessons: [
         Lesson(time: "07.00 - 08.30", subject: "Bahasa Inggris", teacher: "Bu Rina", status: "Mengajar"),
         Lesson(time: "08.30 - 10.00", subject: "Seni Budaya", teacher: "Pak Dedi", status: "Terjadwal"),
-        Lesson(time: "10.15 - 11.45", subject: "Penjasorkes", teacher: "Pak Doni", status: "Mengajar"),
       ],
     ),
-    // Kamis, 8 Oktober
     DayScheduleModel(
       dayName: "Kam",
       dateNum: "8",
       lessons: [
         Lesson(time: "07.00 - 08.30", subject: "Informatika", teacher: "Bu Maya", status: "Mengajar"),
         Lesson(time: "08.30 - 10.00", subject: "Agama Islam", teacher: "Pak Ustadz", status: "Mengajar"),
-        Lesson(time: "10.15 - 11.45", subject: "IPA", teacher: "Bu Siti", status: "Berhalangan"),
       ],
     ),
-    // Jumat, 9 Oktober
     DayScheduleModel(
       dayName: "Jum",
       dateNum: "9",
@@ -94,7 +85,6 @@ class _JadwalPelajaranPageState extends State<JadwalPelajaranPage> {
     ),
   ];
 
-  // Helper Warna Badge Status
   Color _getStatusBgColor(String status) {
     switch (status) {
       case "Mengajar":
@@ -131,7 +121,6 @@ class _JadwalPelajaranPageState extends State<JadwalPelajaranPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Bagian Header Atas
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 16, 20, 12),
               child: Column(
@@ -157,8 +146,6 @@ class _JadwalPelajaranPageState extends State<JadwalPelajaranPage> {
                 ],
               ),
             ),
-
-            // Horizontal Date Picker (Pilihan Hari di Atas)
             SizedBox(
               height: 85,
               child: ListView.builder(
@@ -222,8 +209,6 @@ class _JadwalPelajaranPageState extends State<JadwalPelajaranPage> {
               ),
             ),
             const SizedBox(height: 12),
-
-            // Daftar Timeline Jadwal Mata Pelajaran
             Expanded(
               child: ListView.builder(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -235,7 +220,6 @@ class _JadwalPelajaranPageState extends State<JadwalPelajaranPage> {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Jam Pelajaran di Kiri
                         SizedBox(
                           width: 80,
                           child: Text(
@@ -248,8 +232,6 @@ class _JadwalPelajaranPageState extends State<JadwalPelajaranPage> {
                           ),
                         ),
                         const SizedBox(width: 8),
-
-                        // Indikator Garis Timeline & Titik Biru
                         Column(
                           children: [
                             Container(
@@ -269,8 +251,6 @@ class _JadwalPelajaranPageState extends State<JadwalPelajaranPage> {
                           ],
                         ),
                         const SizedBox(width: 12),
-
-                        // Card Detail Mata Pelajaran
                         Expanded(
                           child: Container(
                             padding: const EdgeInsets.all(14),
@@ -281,7 +261,6 @@ class _JadwalPelajaranPageState extends State<JadwalPelajaranPage> {
                             ),
                             child: Row(
                               children: [
-                                // Garis Warna Dekoratif di Samping Kiri Card
                                 Container(
                                   width: 4,
                                   height: 36,
@@ -291,8 +270,6 @@ class _JadwalPelajaranPageState extends State<JadwalPelajaranPage> {
                                   ),
                                 ),
                                 const SizedBox(width: 12),
-
-                                // Nama Mapel & Guru
                                 Expanded(
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -316,8 +293,6 @@ class _JadwalPelajaranPageState extends State<JadwalPelajaranPage> {
                                     ],
                                   ),
                                 ),
-
-                                // Status Badge (Mengajar / Berhalangan / Terjadwal)
                                 Container(
                                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                                   decoration: BoxDecoration(
@@ -346,14 +321,20 @@ class _JadwalPelajaranPageState extends State<JadwalPelajaranPage> {
           ],
         ),
       ),
-
-      // Bottom Navigation Bar di Bawah
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _bottomNavIndex,
         onTap: (index) {
           setState(() {
             _bottomNavIndex = index;
           });
+
+          // Jika tab Nilai (index 2) diklik, arahkan ke halaman Nilai Siswa
+          if (index == 2) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const NilaiSiswaPage()),
+            );
+          }
         },
         type: BottomNavigationBarType.fixed,
         selectedItemColor: const Color(0xFF1976D2),
