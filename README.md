@@ -169,78 +169,48 @@ D:\PROJECT\-Muhammad_Geraldi_Arisyi_kelompok-7_kh002\
 
 ---
 
-## 🚀 7. Panduan Menjalankan Sistem (Getting Started)
+## 🚀 7. Panduan Menjalankan Aplikasi (Getting Started)
 
 ### Prasyarat Perangkat Lunak:
-* **PHP:** Versi 8.2 atau 8.5 (sudah terpasang di sistem).
-* **Composer:** Versi 2.8+ (sudah terpasang di sistem).
-* **MySQL:** Melalui XAMPP (Port 3306).
-* **Flutter SDK:** Versi 3.47+ (sudah terpasang di sistem).
+* **Flutter SDK:** versi 3.47+.
 * **Android Studio / VS Code** beserta ekstensi Flutter & Dart.
+* **Backend:** bisa memakai server milik teman (lewat ngrok) atau menjalankannya sendiri.
 
 ---
 
-### Langkah 1: Menjalankan Backend (Laravel & MySQL)
-1. Buka **XAMPP Control Panel**, lalu klik **Start** pada modul **MySQL**.
-2. Buka terminal, masuk ke folder `backend`:
-   ```bash
-   cd backend
-   ```
-3. Salin file `.env` dan pasang dependensi:
-   ```bash
-   copy .env.example .env
-   composer install
-   php artisan key:generate
-   ```
-4. Jalankan migrasi dan seeder data contoh:
-   ```bash
-   php artisan migrate:fresh --seed
-   ```
-5. Jalankan server lokal:
-   ```bash
-   php artisan serve
-   ```
-   *Server backend akan aktif di: `http://127.0.0.1:8000`*  
-   *Dashboard Web Admin dapat diakses di: `http://127.0.0.1:8000/admin`*
+### Langkah 1: Menyiapkan Backend
+Backend (Laravel & MySQL) ada di repo terpisah. Cara menjalankannya, termasuk ngrok untuk tim yang bekerja dari tempat berbeda, ada di README **[smart-school-laravel](https://github.com/mgeraldiarr/smart-school-laravel)**.
+
+Jika hanya mengerjakan aplikasi mobile, langkah ini boleh dilewati: aplikasi otomatis memakai server bersama tim.
 
 ---
 
 ### Langkah 2: Menjalankan Aplikasi Mobile (Flutter)
-1. Buka terminal kedua, masuk ke folder `mobile`:
-   ```bash
-   cd mobile
-   ```
-2. Ambil paket dependensi:
+1. Ambil paket dependensi:
    ```bash
    flutter pub get
    ```
-3. Sesuaikan alamat IP backend pada file `lib/core/constants/api_constants.dart`:
-   ```dart
-   // Jika menggunakan HP Fisik (Pastikan Laptop & HP dalam 1 jaringan Wi-Fi):
-   static const String baseUrl = "http://192.168.1.XX:8000/api";
-
-   // Jika menggunakan Emulator Android:
-   static const String baseUrl = "http://10.0.2.2:8000/api";
-   ```
-4. Jalankan aplikasi ke perangkat HP atau emulator:
+2. Jalankan aplikasi. Alamat backend diatur lewat `--dart-define`, jadi **tidak perlu mengubah kode**:
    ```bash
+   # Pakai server bersama tim (default)
    flutter run
+
+   # Pakai backend lain (ngrok milikmu, emulator, atau IP Wi-Fi)
+   flutter run --dart-define=API_URL=https://nama-kamu.ngrok-free.dev/api
+
+   # Chrome
+   flutter run -d chrome --dart-define=API_URL=https://nama-kamu.ngrok-free.dev/api
    ```
+   Daftar lengkap nilai `API_URL` (emulator, HP di Wi-Fi yang sama, dll) ada di README backend.
+
+> Jangan ubah `baseUrl` langsung di `lib/core/constants/api_constants.dart`, supaya alamat server milik teman tidak ikut berubah saat commit.
 
 ---
 
-### 🌐 Bekerja Beda Rumah / Beda Internet? (Gunakan Ngrok - 100% Gratis)
-Jika anggota tim mengerjakan dari rumah masing-masing:
-1. Anggota yang memegang server Laravel cukup menjalankan:
-   ```bash
-   ngrok http 8000
-   ```
-2. Salin URL publik yang dihasilkan (misal: `https://xxxx.ngrok-free.app`), lalu berikan ke tim mobile.
-3. Tim mobile cukup mengganti `baseUrl` di Flutter menjadi:
-   ```dart
-   static const String baseUrl = "https://xxxx.ngrok-free.app/api";
-   ```
-4. Aplikasi mobile langsung terhubung secara *real-time* lewat internet tanpa biaya hosting!
+### 🔑 Akun Contoh (dari seeder)
+| Peran | NISM / NUPTK | Kata sandi |
+|---|---|---|
+| Guru | `198501152010011002` | `password123` |
+| Wali Murid | `20241001` | `password123` |
 
 ---
-
