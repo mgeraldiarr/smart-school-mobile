@@ -1,8 +1,13 @@
 class ApiConstants {
-  // Ganti ke IP LAN laptop (misal: http://192.168.1.15:8000/api) jika pakai HP fisik
-  // atau http://10.0.2.2:8000/api jika pakai Android Emulator
-  static const String baseUrl =
-      'https://untried-payday-dotted.ngrok-free.dev/api';
+  // Alamat backend diatur saat run/build tanpa mengubah file ini, contoh:
+  //   flutter run --dart-define=API_URL=https://nama-kamu.ngrok-free.dev/api
+  //   flutter run --dart-define=API_URL=http://10.0.2.2:8000/api   (Android Emulator)
+  //   flutter run --dart-define=API_URL=http://192.168.1.15:8000/api (HP di Wi-Fi yang sama)
+  // Jika tidak diisi, memakai server bersama tim (ngrok).
+  static const String baseUrl = String.fromEnvironment(
+    'API_URL',
+    defaultValue: 'https://untried-payday-dotted.ngrok-free.dev/api',
+  );
 
   // 1. Auth & Password Reset
   static const String teacherLogin = '/auth/teacher/login';

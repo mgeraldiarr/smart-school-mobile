@@ -78,7 +78,18 @@ class _LoginScreenState extends State<LoginScreen> {
     final emailController = TextEditingController();
     final otpController = TextEditingController();
     final newPasswordController = TextEditingController();
-    int currentStep = 1; // 1: Input Email, 2: Input OTP & Sandi Baru
+    final confirmPasswordController = TextEditingController();
+    // 1: Input Email, 2: Verifikasi OTP, 3: Buat Sandi Baru
+    int currentStep = 1;
+    String? localError;
+    bool obscureNewPassword = true;
+
+    const titles = {
+      1: 'Pemulihan Kata Sandi',
+      2: 'Verifikasi Kode OTP',
+      3: 'Buat Kata Sandi Baru',
+    };
+    const buttonLabels = {1: 'Kirim OTP', 2: 'Verifikasi', 3: 'Simpan Sandi'};
 
     showDialog(
       context: context,
@@ -87,6 +98,74 @@ class _LoginScreenState extends State<LoginScreen> {
         return StatefulBuilder(
           builder: (context, setDialogState) {
             final auth = context.watch<AuthProvider>();
+            final errorText = localError ?? auth.errorMessage;
+
+            Future<void> sendOtp() async {
+              final sent = await auth.requestOtp(emailController.text.trim());
+              if (sent) {
+                otpController.clear();
+                setDialogState(() => currentStep = 2);
+              }
+            }
+
+            Future<void> onSubmit() async {
+              final navigator = Navigator.of(ctx);
+              final messenger = ScaffoldMessenger.of(context);
+              setDialogState(() => localError = null);
+
+              if (currentStep == 1) {
+                if (!emailController.text.contains('@')) {
+                  setDialogState(
+                    () => localError = 'Masukkan alamat email yang valid.',
+                  );
+                  return;
+                }
+                await sendOtp();
+              } else if (currentStep == 2) {
+                if (otpController.text.length != 6) {
+                  setDialogState(() => localError = 'Kode OTP harus 6 digit.');
+                  return;
+                }
+                final valid = await auth.verifyOtp(
+                  emailController.text.trim(),
+                  otpController.text.trim(),
+                );
+                if (valid) {
+                  setDialogState(() => currentStep = 3);
+                }
+              } else {
+                if (newPasswordController.text.length < 8) {
+                  setDialogState(
+                    () => localError = 'Kata sandi minimal 8 karakter.',
+                  );
+                  return;
+                }
+                if (newPasswordController.text !=
+                    confirmPasswordController.text) {
+                  setDialogState(
+                    () => localError = 'Konfirmasi kata sandi tidak sama.',
+                  );
+                  return;
+                }
+                final reset = await auth.resetPassword(
+                  email: emailController.text.trim(),
+                  otp: otpController.text.trim(),
+                  newPassword: newPasswordController.text,
+                );
+                if (reset && mounted) {
+                  navigator.pop();
+                  messenger.showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        'Kata sandi berhasil diperbarui. Silakan login kembali.',
+                        style: GoogleFonts.poppins(),
+                      ),
+                      backgroundColor: AppColors.successGreen,
+                    ),
+                  );
+                }
+              }
+            }
 
             return AlertDialog(
               backgroundColor: Colors.white,
@@ -94,9 +173,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 borderRadius: BorderRadius.circular(20),
               ),
               title: Text(
-                currentStep == 1
-                    ? 'Pemulihan Kata Sandi'
-                    : 'Verifikasi Kode OTP',
+                titles[currentStep]!,
                 style: GoogleFonts.poppins(
                   fontWeight: FontWeight.w700,
                   fontSize: 18,
@@ -108,8 +185,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    if (auth.errorMessage != null)
+                    if (errorText != null)
                       Container(
+                        width: double.infinity,
                         padding: const EdgeInsets.all(10),
                         margin: const EdgeInsets.only(bottom: 12),
                         decoration: BoxDecoration(
@@ -117,7 +195,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Text(
-                          auth.errorMessage!,
+                          errorText,
                           style: GoogleFonts.poppins(
                             fontSize: 12,
                             color: AppColors.dangerRed,
@@ -144,9 +222,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                       ),
-                    ] else ...[
+                    ] else if (currentStep == 2) ...[
                       Text(
-                        'Kode 6 digit telah dikirim ke ${emailController.text}. Masukkan kode tersebut dan buat kata sandi baru Anda.',
+                        'Kode 6 digit telah dikirim ke ${emailController.text.trim()}. Periksa juga folder spam.',
                         style: GoogleFonts.poppins(
                           fontSize: 12,
                           color: AppColors.textMuted,
@@ -156,6 +234,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       TextField(
                         controller: otpController,
                         keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                        ],
                         maxLength: 6,
                         style: GoogleFonts.poppins(
                           fontSize: 22,
@@ -171,12 +252,57 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 12),
+                      const SizedBox(height: 4),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: TextButton(
+                          onPressed: auth.isLoading ? null : sendOtp,
+                          child: Text(
+                            'Kirim ulang kode',
+                            style: GoogleFonts.poppins(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.brandBlue,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ] else ...[
+                      Text(
+                        'Kode terverifikasi. Buat kata sandi baru untuk akun Anda.',
+                        style: GoogleFonts.poppins(
+                          fontSize: 12,
+                          color: AppColors.textMuted,
+                        ),
+                      ),
+                      const SizedBox(height: 14),
                       TextField(
                         controller: newPasswordController,
-                        obscureText: true,
+                        obscureText: obscureNewPassword,
                         decoration: InputDecoration(
                           hintText: 'Kata Sandi Baru (Min. 8 Karakter)',
+                          prefixIcon: const Icon(Icons.lock_outline),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              obscureNewPassword
+                                  ? Icons.visibility_off_outlined
+                                  : Icons.visibility_outlined,
+                            ),
+                            onPressed: () => setDialogState(
+                              () => obscureNewPassword = !obscureNewPassword,
+                            ),
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      TextField(
+                        controller: confirmPasswordController,
+                        obscureText: obscureNewPassword,
+                        decoration: InputDecoration(
+                          hintText: 'Ulangi Kata Sandi Baru',
                           prefixIcon: const Icon(Icons.lock_outline),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
@@ -205,44 +331,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  onPressed: auth.isLoading
-                      ? null
-                      : () async {
-                          final navigator = Navigator.of(ctx);
-                          final messenger = ScaffoldMessenger.of(context);
-
-                          if (currentStep == 1) {
-                            if (emailController.text.trim().isEmpty) return;
-                            final sent = await auth.requestOtp(
-                              emailController.text.trim(),
-                            );
-                            if (sent) {
-                              setDialogState(() => currentStep = 2);
-                            }
-                          } else {
-                            if (otpController.text.length != 6 ||
-                                newPasswordController.text.length < 8) {
-                              return;
-                            }
-                            final reset = await auth.resetPassword(
-                              email: emailController.text.trim(),
-                              otp: otpController.text.trim(),
-                              newPassword: newPasswordController.text,
-                            );
-                            if (reset && mounted) {
-                              navigator.pop();
-                              messenger.showSnackBar(
-                                SnackBar(
-                                  content: Text(
-                                    'Kata sandi berhasil diperbarui. Silakan login kembali.',
-                                    style: GoogleFonts.poppins(),
-                                  ),
-                                  backgroundColor: AppColors.successGreen,
-                                ),
-                              );
-                            }
-                          }
-                        },
+                  onPressed: auth.isLoading ? null : onSubmit,
                   child: auth.isLoading
                       ? const SizedBox(
                           width: 16,
@@ -253,7 +342,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         )
                       : Text(
-                          currentStep == 1 ? 'Kirim OTP' : 'Simpan Sandi',
+                          buttonLabels[currentStep]!,
                           style: GoogleFonts.poppins(
                             fontWeight: FontWeight.w600,
                             color: Colors.white,
