@@ -18,6 +18,10 @@ class AuthProvider extends ChangeNotifier {
   String? get userRole => _userRole;
   bool get isAuthenticated => _userData != null;
 
+  // Respons login menyimpan profil di 'teacher', sedangkan /auth/me di 'profile'
+  Map<String, dynamic>? get teacherProfile =>
+      (_userData?['teacher'] ?? _userData?['profile']) as Map<String, dynamic>?;
+
   void _setLoading(bool value) {
     _isLoading = value;
     notifyListeners();

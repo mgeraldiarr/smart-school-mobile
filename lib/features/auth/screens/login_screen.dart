@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/constants/app_colors.dart';
+import '../../teacher/screens/teacher_home_screen.dart';
 import '../providers/auth_provider.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -34,6 +35,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     final auth = context.read<AuthProvider>();
     final messenger = ScaffoldMessenger.of(context);
+    final navigator = Navigator.of(context);
     final identifier = _identifierController.text.trim();
     final password = _passwordController.text;
     final isTeacher = identifier.length >= _nuptkMinLength;
@@ -45,18 +47,25 @@ class _LoginScreenState extends State<LoginScreen> {
       success = await auth.loginParent(nis: identifier, password: password);
     }
 
-    if (success && mounted) {
-      messenger.showSnackBar(
-        SnackBar(
-          content: Text(
-            'Berhasil masuk sebagai ${isTeacher ? "Guru" : "Wali Murid"}',
-            style: GoogleFonts.poppins(fontWeight: FontWeight.w500),
-          ),
-          backgroundColor: AppColors.successGreen,
-        ),
+    if (!success || !mounted) return;
+
+    if (isTeacher) {
+      navigator.pushReplacement(
+        MaterialPageRoute(builder: (_) => const TeacherHomeScreen()),
       );
-      // Nanti akan diarahkan ke Dashboard Guru atau Dashboard Ortu
+      return;
     }
+
+    messenger.showSnackBar(
+      SnackBar(
+        content: Text(
+          'Berhasil masuk sebagai Wali Murid',
+          style: GoogleFonts.poppins(fontWeight: FontWeight.w500),
+        ),
+        backgroundColor: AppColors.successGreen,
+      ),
+    );
+    // Nanti akan diarahkan ke Dashboard Wali Murid
   }
 
   void _showHelpInfo() {
