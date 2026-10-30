@@ -7,8 +7,13 @@ import 'teacher/models/teacher_schedule.dart';
 // CLASS HALAMAN VERIFIKASI KEHADIRAN
 class VerifikasiKehadiranPage extends StatelessWidget {
   final TeacherSchedule schedule;
+  final int detectedFaceCount;
 
-  const VerifikasiKehadiranPage({super.key, required this.schedule});
+  const VerifikasiKehadiranPage({
+    super.key,
+    required this.schedule,
+    this.detectedFaceCount = 0,
+  });
 
   // WIDGET UNTUK MENAMPILKAN DETAIL SISWA
   Widget detailRow(String label, String value, {bool last = false}) {
@@ -134,9 +139,11 @@ class VerifikasiKehadiranPage extends StatelessWidget {
                         color: const Color(0xFFFFF0DE),
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      child: const Text(
-                        'Menunggu Verifikasi Guru',
-                        style: TextStyle(
+                      child: Text(
+                        detectedFaceCount > 0
+                            ? 'Wajah terdeteksi • Menunggu verifikasi guru'
+                            : 'Verifikasi manual',
+                        style: const TextStyle(
                           fontSize: 9,
                           color: Color(0xFFB85A00),
                           fontWeight: FontWeight.w700,
@@ -158,9 +165,12 @@ class VerifikasiKehadiranPage extends StatelessWidget {
 
                     const SizedBox(height: 5),
 
-                    const Text(
-                      'NIS 20260001 • Kelas 8A',
-                      style: TextStyle(fontSize: 11, color: Color(0xFF71829D)),
+                    Text(
+                      'NIS 20260001 • Kelas ${schedule.className}',
+                      style: const TextStyle(
+                        fontSize: 11,
+                        color: Color(0xFF71829D),
+                      ),
                     ),
 
                     const SizedBox(height: 19),
@@ -180,7 +190,7 @@ class VerifikasiKehadiranPage extends StatelessWidget {
                         children: [
                           detailRow('Mata Pelajaran', schedule.subjectName),
                           detailRow('Kelas', schedule.className),
-                          detailRow('Guru', 'Pak Ahmad'),
+                          detailRow('Guru', 'Guru pengajar'),
                           detailRow(
                             'Waktu Terdeteksi',
                             '07.15 WIB',
@@ -203,16 +213,18 @@ class VerifikasiKehadiranPage extends StatelessWidget {
                       child: Column(
                         children: [
                           // LABEL DAN PERSENTASE
-                          const Row(
+                          Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
-                                'Kecocokan wajah',
+                              const Text(
+                                'Deteksi wajah',
                                 style: TextStyle(fontSize: 11),
                               ),
                               Text(
-                                '98%',
-                                style: TextStyle(
+                                detectedFaceCount > 0
+                                    ? '$detectedFaceCount wajah'
+                                    : 'Tidak dipindai',
+                                style: const TextStyle(
                                   fontSize: 11,
                                   fontWeight: FontWeight.w800,
                                   color: Color(0xFF0C9C65),
@@ -226,11 +238,11 @@ class VerifikasiKehadiranPage extends StatelessWidget {
                           // PROGRESS BAR KECOCOKAN
                           ClipRRect(
                             borderRadius: BorderRadius.circular(10),
-                            child: const LinearProgressIndicator(
-                              value: 0.98,
+                            child: LinearProgressIndicator(
+                              value: detectedFaceCount > 0 ? 1 : 0,
                               minHeight: 6,
-                              backgroundColor: Color(0xFFE4F0E9),
-                              valueColor: AlwaysStoppedAnimation<Color>(
+                              backgroundColor: const Color(0xFFE4F0E9),
+                              valueColor: const AlwaysStoppedAnimation<Color>(
                                 Color(0xFF32C184),
                               ),
                             ),

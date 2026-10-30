@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
+import 'package:google_mlkit_face_detection/google_mlkit_face_detection.dart';
 
 import 'teacher/models/teacher_schedule.dart';
 import 'verifikasi_kehadiran.dart';
@@ -129,31 +130,47 @@ class _PemindaiWajahPageState extends State<PemindaiWajahPage> {
       return;
     }
 
+    final platform = Theme.of(context).platform;
+    if (platform != TargetPlatform.android && platform != TargetPlatform.iOS) {
+      tampilkanPesan('Deteksi wajah hanya tersedia di Android dan iOS.');
+      return;
+    }
+
     try {
       setState(() {
         sedangMemindai = true;
       });
 
       final foto = await cameraController!.takePicture();
-
       if (!mounted) return;
 
-      tampilkanPesan('Foto berhasil diambil');
+      final detector = FaceDetector(
+        options: FaceDetectorOptions(performanceMode: FaceDetectorMode.fast),
+      );
+      late final List<Face> faces;
+      try {
+        faces = await detector.processImage(InputImage.fromFilePath(foto.path));
+      } finally {
+        await detector.close();
+      }
 
-      // FOTO TERSIMPAN DI LOKASI SEMENTARA.
-      // NAVIGASI KE HALAMAN VERIFIKASI.
+      if (!mounted) return;
+      if (faces.isEmpty) {
+        tampilkanPesan('Wajah tidak terdeteksi. Silakan coba pindai lagi.');
+        return;
+      }
+
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) =>
-              VerifikasiKehadiranPage(schedule: widget.schedule),
+          builder: (context) => VerifikasiKehadiranPage(
+            schedule: widget.schedule,
+            detectedFaceCount: faces.length,
+          ),
         ),
       );
-
-      // Variabel foto.path berisi lokasi file foto.
-      debugPrint('Lokasi foto: ${foto.path}');
     } catch (e) {
-      tampilkanPesan('Gagal mengambil foto: $e');
+      tampilkanPesan('Gagal memindai wajah: $e');
     } finally {
       if (mounted) {
         setState(() {
@@ -316,7 +333,7 @@ class _PemindaiWajahPageState extends State<PemindaiWajahPage> {
                   child: Column(
                     children: [
                       // INFORMASI MATA PELAJARAN
-                      const Row(
+                      Row(
                         children: [
                           Expanded(
                             child: Column(
@@ -331,8 +348,8 @@ class _PemindaiWajahPageState extends State<PemindaiWajahPage> {
                                 ),
                                 SizedBox(height: 5),
                                 Text(
-                                  'Matematika',
-                                  style: TextStyle(
+                                  widget.schedule.subjectName,
+                                  style: const TextStyle(
                                     color: Colors.white,
                                     fontSize: 11,
                                     fontWeight: FontWeight.w700,
@@ -354,8 +371,8 @@ class _PemindaiWajahPageState extends State<PemindaiWajahPage> {
                                 ),
                                 SizedBox(height: 5),
                                 Text(
-                                  '8A',
-                                  style: TextStyle(
+                                  widget.schedule.className,
+                                  style: const TextStyle(
                                     color: Colors.white,
                                     fontSize: 11,
                                     fontWeight: FontWeight.w700,
