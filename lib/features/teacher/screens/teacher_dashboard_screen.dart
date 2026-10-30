@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../auth/providers/auth_provider.dart';
 import '../../informasi_berhasil.dart';
+import '../../konfirmasi_mengajar.dart';
 import '../providers/teacher_provider.dart';
 import '../teacher_name.dart';
 import '../widgets/schedule_card.dart';
@@ -132,7 +133,14 @@ class _TeacherDashboardScreenState extends State<TeacherDashboardScreen> {
           ScheduleCard(
             schedule: remaining.first,
             status: remaining.first.statusAt(now),
-            onStart: () => _showComingSoon('presensi wajah'),
+            onStart: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => KonfirmasiMengajarPage(
+                  schedule: remaining.first,
+                ),
+              ),
+            ),
             onUnavailable: () => Navigator.push(
               context,
               MaterialPageRoute(
