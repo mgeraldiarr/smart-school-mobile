@@ -389,40 +389,16 @@ class _TeacherProfileScreenState extends State<TeacherProfileScreen> {
       ),
       child: Column(
         children: [
-          Row(
-            children: [
-              Text(
-                'Profil Guru',
-                style: GoogleFonts.poppins(
-                  fontSize: 21,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.white,
-                ),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              'Profil Guru',
+              style: GoogleFonts.poppins(
+                fontSize: 21,
+                fontWeight: FontWeight.w700,
+                color: Colors.white,
               ),
-              const Spacer(),
-              Material(
-                color: Colors.white.withValues(alpha: 0.18),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  side: BorderSide(
-                    color: Colors.white.withValues(alpha: 0.35),
-                  ),
-                ),
-                child: InkWell(
-                  onTap: onEditTap,
-                  borderRadius: BorderRadius.circular(12),
-                  child: const SizedBox(
-                    width: 40,
-                    height: 40,
-                    child: Icon(
-                      Icons.edit_outlined,
-                      color: Colors.white,
-                      size: 20,
-                    ),
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
           const SizedBox(height: 20),
           SizedBox(
