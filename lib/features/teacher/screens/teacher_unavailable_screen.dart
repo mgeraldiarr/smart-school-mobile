@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../core/constants/app_colors.dart';
+import '../../informasi_berhasil.dart';
 import '../models/teacher_schedule.dart';
 
 class TeacherUnavailableScreen extends StatefulWidget {
@@ -78,14 +79,12 @@ class _TeacherUnavailableScreenState extends State<TeacherUnavailableScreen> {
       return;
     }
 
-    Navigator.of(context).pop(true);
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          'Informasi berhalangan ($_selectedReason) telah dikirim ke wali murid kelas $_cleanClassName.',
-          style: GoogleFonts.poppins(fontWeight: FontWeight.w500),
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (_) => InformasiBerhasilPage(
+          subjectName: widget.schedule.subjectName,
+          className: _cleanClassName,
         ),
-        backgroundColor: AppColors.successGreen,
       ),
     );
   }

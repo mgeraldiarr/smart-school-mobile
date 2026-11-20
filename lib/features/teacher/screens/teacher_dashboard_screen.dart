@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../../../core/constants/app_colors.dart';
 import '../../auth/providers/auth_provider.dart';
+import '../../konfirmasi_mengajar.dart';
 import '../providers/teacher_provider.dart';
 import '../teacher_name.dart';
 import '../widgets/schedule_card.dart';
@@ -27,18 +28,6 @@ class _TeacherDashboardScreenState extends State<TeacherDashboardScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<TeacherProvider>().loadTodaySchedules();
     });
-  }
-
-  void _showComingSoon(String feature) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          'Fitur $feature segera hadir.',
-          style: GoogleFonts.poppins(fontWeight: FontWeight.w500),
-        ),
-        backgroundColor: AppColors.brandBlue,
-      ),
-    );
   }
 
   @override
@@ -139,15 +128,18 @@ class _TeacherDashboardScreenState extends State<TeacherDashboardScreen> {
           ScheduleCard(
             schedule: remaining.first,
             status: remaining.first.statusAt(now),
-            onStart: () => _showComingSoon('presensi wajah'),
-            onUnavailable: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) =>
-                      TeacherUnavailableScreen(schedule: remaining.first),
-                ),
-              );
-            },
+            onStart: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) =>
+                    KonfirmasiMengajarPage(schedule: remaining.first),
+              ),
+            ),
+            onUnavailable: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) =>
+                    TeacherUnavailableScreen(schedule: remaining.first),
+              ),
+            ),
           ),
           if (remaining.length > 1) ...[
             const SizedBox(height: 28),
