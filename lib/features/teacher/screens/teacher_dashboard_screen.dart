@@ -8,6 +8,8 @@ import '../../auth/providers/auth_provider.dart';
 import '../providers/teacher_provider.dart';
 import '../teacher_name.dart';
 import '../widgets/schedule_card.dart';
+import 'teacher_notification_screen.dart';
+import 'teacher_unavailable_screen.dart';
 
 class TeacherDashboardScreen extends StatefulWidget {
   final VoidCallback onSeeAllSchedules;
@@ -58,7 +60,13 @@ class _TeacherDashboardScreenState extends State<TeacherDashboardScreen> {
             now: now,
             scheduleCount: teacher.todaySchedules.length,
             teachingHours: teacher.teachingHours,
-            onNotificationTap: () => _showComingSoon('notifikasi'),
+            onNotificationTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => const TeacherNotificationScreen(),
+                ),
+              );
+            },
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 24, 20, 32),
@@ -132,7 +140,14 @@ class _TeacherDashboardScreenState extends State<TeacherDashboardScreen> {
             schedule: remaining.first,
             status: remaining.first.statusAt(now),
             onStart: () => _showComingSoon('presensi wajah'),
-            onUnavailable: () => _showComingSoon('laporan berhalangan'),
+            onUnavailable: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) =>
+                      TeacherUnavailableScreen(schedule: remaining.first),
+                ),
+              );
+            },
           ),
           if (remaining.length > 1) ...[
             const SizedBox(height: 28),
