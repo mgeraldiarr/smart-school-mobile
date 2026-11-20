@@ -17,7 +17,9 @@ class StudentGrade {
 }
 
 class NilaiSiswaPage extends StatefulWidget {
-  const NilaiSiswaPage({super.key});
+  final bool showBottomNav;
+
+  const NilaiSiswaPage({super.key, this.showBottomNav = true});
 
   @override
   State<NilaiSiswaPage> createState() => _NilaiSiswaPageState();
@@ -298,7 +300,9 @@ class _NilaiSiswaPageState extends State<NilaiSiswaPage> {
       ),
 
       // Bottom Navigation Bar yang Menyambung ke Halaman Jadwal (page12)
-      bottomNavigationBar: BottomNavigationBar(
+      bottomNavigationBar: !widget.showBottomNav
+          ? null
+          : BottomNavigationBar(
         currentIndex: _bottomNavIndex,
         onTap: (index) {
           setState(() {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../page11/daftar_kehadiran.dart';
 import 'pemindai_wajah.dart';
 import 'teacher/models/teacher_schedule.dart';
 
@@ -216,9 +217,11 @@ class AbsensiBerhasilPage extends StatelessWidget {
                 height: 48,
                 child: OutlinedButton(
                   onPressed: () {
-                    tampilkanPesan(
+                    Navigator.push(
                       context,
-                      'Fitur daftar kehadiran belum dibuat.',
+                      MaterialPageRoute(
+                        builder: (context) => const DaftarKehadiranPage(),
+                      ),
                     );
                   },
                   style: OutlinedButton.styleFrom(

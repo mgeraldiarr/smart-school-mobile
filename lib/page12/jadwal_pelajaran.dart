@@ -31,7 +31,9 @@ class DayScheduleModel {
 }
 
 class JadwalPelajaranPage extends StatefulWidget {
-  const JadwalPelajaranPage({Key? key}) : super(key: key);
+  final bool showBottomNav;
+
+  const JadwalPelajaranPage({super.key, this.showBottomNav = true});
 
   @override
   State<JadwalPelajaranPage> createState() => _JadwalPelajaranPageState();
@@ -174,7 +176,7 @@ class _JadwalPelajaranPageState extends State<JadwalPelajaranPage> {
                         boxShadow: isSelected
                             ? [
                                 BoxShadow(
-                                  color: const Color(0xFF1976D2).withOpacity(0.3),
+                                  color: const Color(0xFF1976D2).withValues(alpha: 0.3),
                                   blurRadius: 8,
                                   offset: const Offset(0, 4),
                                 )
@@ -321,7 +323,9 @@ class _JadwalPelajaranPageState extends State<JadwalPelajaranPage> {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
+      bottomNavigationBar: !widget.showBottomNav
+          ? null
+          : BottomNavigationBar(
         currentIndex: _bottomNavIndex,
         onTap: (index) {
           setState(() {

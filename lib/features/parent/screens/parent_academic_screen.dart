@@ -4,10 +4,15 @@ import '../../../core/constants/app_colors.dart';
 
 /// Academic page UI with fictional grades. No API or authentication changes.
 class ParentAcademicScreen extends StatefulWidget {
-  const ParentAcademicScreen({super.key, this.onMenuSelected});
+  const ParentAcademicScreen({
+    super.key,
+    this.onMenuSelected,
+    this.showBottomNav = true,
+  });
 
   /// Let the team's router handle other menus after their features are merged.
   final ValueChanged<int>? onMenuSelected;
+  final bool showBottomNav;
 
   @override
   State<ParentAcademicScreen> createState() => _ParentAcademicScreenState();
@@ -137,7 +142,9 @@ class _ParentAcademicScreenState extends State<ParentAcademicScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: NavigationBar(
+      bottomNavigationBar: !widget.showBottomNav
+          ? null
+          : NavigationBar(
         selectedIndex: 3,
         backgroundColor: AppColors.surface,
         indicatorColor: AppColors.headerTint,
@@ -210,9 +217,11 @@ class _ParentAcademicScreenState extends State<ParentAcademicScreen> {
       final exams = Row(mainAxisSize: MainAxisSize.min, children: [
         _score('UTS', grade.uts), const SizedBox(width: 6), _score('UAS', grade.uas),
       ]);
-      if (compact) return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        heading, const SizedBox(height: 12), Align(alignment: Alignment.centerRight, child: exams),
-      ]);
+      if (compact) {
+        return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          heading, const SizedBox(height: 12), Align(alignment: Alignment.centerRight, child: exams),
+        ]);
+      }
       return Row(children: [Expanded(child: heading), const SizedBox(width: 12), exams]);
     }),
   );

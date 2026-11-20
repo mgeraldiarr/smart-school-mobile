@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../core/constants/app_colors.dart';
+import '../../../page12/jadwal_pelajaran.dart';
+import '../../../page13/nilai_siswa_page.dart';
 import 'teacher_dashboard_screen.dart';
 import 'teacher_profile_screen.dart';
 
@@ -45,14 +47,8 @@ class _TeacherHomeScreenState extends State<TeacherHomeScreen> {
               onSeeAllSchedules: () =>
                   setState(() => _currentIndex = _scheduleTab),
             ),
-            const _ComingSoonTab(
-              icon: Icons.calendar_month_outlined,
-              title: 'Jadwal Mengajar',
-            ),
-            const _ComingSoonTab(
-              icon: Icons.fact_check_outlined,
-              title: 'Input Nilai',
-            ),
+            const JadwalPelajaranPage(showBottomNav: false),
+            const NilaiSiswaPage(showBottomNav: false),
             const TeacherProfileScreen(),
           ],
         ),
@@ -118,51 +114,6 @@ class _TeacherHomeScreenState extends State<TeacherHomeScreen> {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _ComingSoonTab extends StatelessWidget {
-  final IconData icon;
-  final String title;
-
-  const _ComingSoonTab({required this.icon, required this.title});
-
-  @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-      child: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(32),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(
-                icon,
-                size: 56,
-                color: AppColors.brandBlue.withValues(alpha: 0.5),
-              ),
-              const SizedBox(height: 14),
-              Text(
-                title,
-                style: GoogleFonts.poppins(
-                  fontSize: 17,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.textDark,
-                ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                'Fitur ini sedang dikembangkan.',
-                style: GoogleFonts.poppins(
-                  fontSize: 13,
-                  color: AppColors.textMuted,
-                ),
-              ),
-            ],
-          ),
-        ),
       ),
     );
   }

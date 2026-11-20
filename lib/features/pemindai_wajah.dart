@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:google_mlkit_face_detection/google_mlkit_face_detection.dart';
 
+import '../page10/absensi_manual.dart';
 import 'teacher/models/teacher_schedule.dart';
 import 'verifikasi_kehadiran.dart';
 
@@ -477,10 +478,7 @@ class _PemindaiWajahPageState extends State<PemindaiWajahPage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) =>
-                                  VerifikasiKehadiranPage(
-                                    schedule: widget.schedule,
-                                  ),
+                              builder: (context) => const AbsensiManualPage(),
                             ),
                           );
                         },

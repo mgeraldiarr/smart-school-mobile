@@ -92,7 +92,7 @@ class _DaftarKehadiranPageState extends State<DaftarKehadiranPage> {
             ),
             child: IconButton(
               icon: const Icon(Icons.arrow_back_ios_new, color: Color(0xFF1E88E5), size: 18),
-              onPressed: () {},
+              onPressed: () => Navigator.of(context).maybePop(),
             ),
           ),
         ),
@@ -320,7 +320,7 @@ class _DaftarKehadiranPageState extends State<DaftarKehadiranPage> {
                 color: Colors.white,
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
+                    color: Colors.black.withValues(alpha: 0.05),
                     blurRadius: 10,
                     offset: const Offset(0, -3),
                   ),
@@ -333,6 +333,7 @@ class _DaftarKehadiranPageState extends State<DaftarKehadiranPage> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text("Absensi selesai disimpan!")),
                     );
+                    Navigator.of(context).popUntil((route) => route.isFirst);
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF1565C0),

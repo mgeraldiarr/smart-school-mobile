@@ -16,7 +16,7 @@ class Student {
 }
 
 class AbsensiManualPage extends StatefulWidget {
-  const AbsensiManualPage({Key? key}) : super(key: key);
+  const AbsensiManualPage({super.key});
 
   @override
   State<AbsensiManualPage> createState() => _AbsensiManualPageState();
@@ -126,7 +126,7 @@ class _AbsensiManualPageState extends State<AbsensiManualPage> {
             ),
             child: IconButton(
               icon: const Icon(Icons.arrow_back_ios_new, color: Color(0xFF1E88E5), size: 18),
-              onPressed: () {},
+              onPressed: () => Navigator.of(context).maybePop(),
             ),
           ),
         ),
@@ -166,7 +166,7 @@ class _AbsensiManualPageState extends State<AbsensiManualPage> {
                           Container(
                             padding: const EdgeInsets.all(10),
                             decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.2),
+                              color: Colors.white.withValues(alpha: 0.2),
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: const Icon(Icons.menu_book_rounded, color: Colors.white, size: 24),
@@ -191,7 +191,7 @@ class _AbsensiManualPageState extends State<AbsensiManualPage> {
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                             decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.25),
+                              color: Colors.white.withValues(alpha: 0.25),
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: const Text(
@@ -422,7 +422,7 @@ class _AbsensiManualPageState extends State<AbsensiManualPage> {
                 color: Colors.white,
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
+                    color: Colors.black.withValues(alpha: 0.05),
                     blurRadius: 10,
                     offset: const Offset(0, -3),
                   ),

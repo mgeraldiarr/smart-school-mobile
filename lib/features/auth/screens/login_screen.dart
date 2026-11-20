@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/constants/app_colors.dart';
+import '../../parent/screens/parent_home_screen.dart';
 import '../../teacher/screens/teacher_home_screen.dart';
 import '../providers/auth_provider.dart';
 
@@ -34,7 +35,6 @@ class _LoginScreenState extends State<LoginScreen> {
     if (!_formKey.currentState!.validate()) return;
 
     final auth = context.read<AuthProvider>();
-    final messenger = ScaffoldMessenger.of(context);
     final navigator = Navigator.of(context);
     final identifier = _identifierController.text.trim();
     final password = _passwordController.text;
@@ -56,16 +56,9 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     }
 
-    messenger.showSnackBar(
-      SnackBar(
-        content: Text(
-          'Berhasil masuk sebagai Wali Murid',
-          style: GoogleFonts.poppins(fontWeight: FontWeight.w500),
-        ),
-        backgroundColor: AppColors.successGreen,
-      ),
+    navigator.pushReplacement(
+      MaterialPageRoute(builder: (_) => const ParentHomeScreen()),
     );
-    // Nanti akan diarahkan ke Dashboard Wali Murid
   }
 
   void _showHelpInfo() {
