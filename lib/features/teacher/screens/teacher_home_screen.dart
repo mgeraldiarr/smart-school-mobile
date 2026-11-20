@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 
 import '../../../core/constants/app_colors.dart';
-import '../../auth/providers/auth_provider.dart';
-import '../../auth/screens/login_screen.dart';
-import '../providers/teacher_provider.dart';
-import '../teacher_name.dart';
 import 'teacher_dashboard_screen.dart';
+import 'teacher_profile_screen.dart';
 
 /// Kerangka utama aplikasi guru: Beranda, Jadwal, Nilai, Profil.
 class TeacherHomeScreen extends StatefulWidget {
@@ -32,13 +28,14 @@ class _TeacherHomeScreenState extends State<TeacherHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final hasBlueHeader = _currentIndex == 0 || _currentIndex == 3;
+
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      // Header Beranda berwarna biru, tab lain berlatar terang
-      value:
-          (_currentIndex == 0
-                  ? SystemUiOverlayStyle.light
-                  : SystemUiOverlayStyle.dark)
-              .copyWith(statusBarColor: Colors.transparent),
+      // Header Beranda & Profil berwarna biru, tab lain berlatar terang
+      value: (hasBlueHeader
+              ? SystemUiOverlayStyle.light
+              : SystemUiOverlayStyle.dark)
+          .copyWith(statusBarColor: Colors.transparent),
       child: Scaffold(
         backgroundColor: const Color(0xFFF4F7FC),
         body: IndexedStack(
@@ -56,7 +53,7 @@ class _TeacherHomeScreenState extends State<TeacherHomeScreen> {
               icon: Icons.fact_check_outlined,
               title: 'Input Nilai',
             ),
-            const _TeacherProfileTab(),
+            const TeacherProfileScreen(),
           ],
         ),
         bottomNavigationBar: _buildBottomNav(),
@@ -166,97 +163,6 @@ class _ComingSoonTab extends StatelessWidget {
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-class _TeacherProfileTab extends StatelessWidget {
-  const _TeacherProfileTab();
-
-  Future<void> _logout(BuildContext context) async {
-    final navigator = Navigator.of(context);
-    final teacher = context.read<TeacherProvider>();
-    await context.read<AuthProvider>().logout();
-    teacher.clear();
-    navigator.pushAndRemoveUntil(
-      MaterialPageRoute(builder: (_) => const LoginScreen()),
-      (_) => false,
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final profile = context.watch<AuthProvider>().teacherProfile;
-    final fullName = profile?['full_name'] as String?;
-
-    return SafeArea(
-      child: ListView(
-        padding: const EdgeInsets.fromLTRB(24, 40, 24, 24),
-        children: [
-          Center(
-            child: Container(
-              width: 80,
-              height: 80,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [AppColors.brandBlueBright, AppColors.brandBlueDeep],
-                ),
-                borderRadius: BorderRadius.circular(24),
-              ),
-              child: Text(
-                teacherInitials(fullName),
-                style: GoogleFonts.poppins(
-                  fontSize: 26,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(height: 16),
-          Text(
-            fullName ?? '-',
-            textAlign: TextAlign.center,
-            style: GoogleFonts.poppins(
-              fontSize: 17,
-              fontWeight: FontWeight.w600,
-              color: AppColors.textDark,
-            ),
-          ),
-          Text(
-            'NUPTK ${profile?['nuptk'] ?? '-'}',
-            textAlign: TextAlign.center,
-            style: GoogleFonts.poppins(
-              fontSize: 13,
-              color: AppColors.textMuted,
-            ),
-          ),
-          const SizedBox(height: 32),
-          SizedBox(
-            height: 48,
-            child: OutlinedButton.icon(
-              onPressed: () => _logout(context),
-              icon: const Icon(Icons.logout_rounded, size: 20),
-              label: Text(
-                'Keluar',
-                style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
-              ),
-              style: OutlinedButton.styleFrom(
-                foregroundColor: AppColors.dangerRed,
-                side: BorderSide(
-                  color: AppColors.dangerRed.withValues(alpha: 0.4),
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(14),
-                ),
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }
