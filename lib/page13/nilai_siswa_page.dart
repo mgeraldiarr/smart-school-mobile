@@ -1,20 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:smart_school_mobile/features/teacher/models/student_grade.dart';
+import 'package:smart_school_mobile/features/teacher/screens/input_grade_screen.dart';
 import 'package:smart_school_mobile/page12/jadwal_pelajaran.dart'; // Menghubungkan ke page12 Jadwal Pelajaran
-
-// Model Data Nilai Siswa
-class StudentGrade {
-  final int id;
-  final String name;
-  int uts;
-  int uas;
-
-  StudentGrade({
-    required this.id,
-    required this.name,
-    required this.uts,
-    required this.uas,
-  });
-}
 
 class NilaiSiswaPage extends StatefulWidget {
   final bool showBottomNav;
@@ -28,63 +15,38 @@ class NilaiSiswaPage extends StatefulWidget {
 class _NilaiSiswaPageState extends State<NilaiSiswaPage> {
   int _bottomNavIndex = 2; // Default tab Nilai aktif (indeks 2)
 
-  // Data Dummy Siswa & Nilainya sesuai gambar
+  // TODO(api): ganti dengan data dari ApiConstants.teacherGrades
+  static const String _className = '8A';
+  static const String _subject = 'Matematika';
+  static const String _semester = 'Ganjil 2026/2027';
+
+  // Data dummy siswa & nilainya
   final List<StudentGrade> _students = [
-    StudentGrade(id: 1, name: "Ahmad Rizki", uts: 85, uas: 90),
-    StudentGrade(id: 2, name: "Budi Santoso", uts: 78, uas: 84),
-    StudentGrade(id: 3, name: "Dinda Putri", uts: 92, uas: 95),
-    StudentGrade(id: 4, name: "Rizki Fajar", uts: 80, uas: 82),
+    const StudentGrade(id: 1, name: 'Ahmad Rizki', nis: '20260001', className: _className, uts: 85, uas: 90),
+    const StudentGrade(id: 2, name: 'Budi Santoso', nis: '20260002', className: _className, uts: 78, uas: 84),
+    const StudentGrade(id: 3, name: 'Dinda Putri', nis: '20260003', className: _className, uts: 92, uas: 95),
+    const StudentGrade(id: 4, name: 'Rizki Fajar', nis: '20260004', className: _className, uts: 80, uas: 82),
   ];
 
-  // Fungsi untuk menampilkan Dialog Edit Nilai
-  void _showEditDialog(StudentGrade student) {
-    TextEditingController utsController = TextEditingController(text: student.uts.toString());
-    TextEditingController uasController = TextEditingController(text: student.uas.toString());
+  /// Buka halaman Input Nilai, lalu perbarui daftar dengan hasil yang dikembalikan.
+  Future<void> _openInputGrade(int index) async {
+    final updated = await Navigator.of(context).push<StudentGrade>(
+      MaterialPageRoute(
+        builder: (_) => InputGradeScreen(
+          grade: _students[index],
+          subject: _subject,
+          semester: _semester,
+          // TODO(api): kirim updated.toJson() ke ApiConstants.teacherGrades di sini.
+          // Bila request melempar error, halaman Input Nilai menampilkan pesan gagal.
+        ),
+      ),
+    );
 
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          title: Text("Edit Nilai - ${student.name}", style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                controller: utsController,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(labelText: "Nilai UTS", border: OutlineInputBorder()),
-              ),
-              const SizedBox(height: 12),
-              TextField(
-                controller: uasController,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(labelText: "Nilai UAS", border: OutlineInputBorder()),
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text("Batal", style: TextStyle(color: Colors.grey)),
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF1976D2)),
-              onPressed: () {
-                setState(() {
-                  student.uts = int.tryParse(utsController.text) ?? student.uts;
-                  student.uas = int.tryParse(uasController.text) ?? student.uas;
-                });
-                Navigator.pop(context);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text("Nilai ${student.name} berhasil diperbarui!")),
-                );
-              },
-              child: const Text("Simpan", style: TextStyle(color: Colors.white)),
-            ),
-          ],
-        );
-      },
+    if (updated == null || !mounted) return; // Pengguna menekan kembali
+
+    setState(() => _students[index] = updated);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Nilai ${updated.name} berhasil diperbarui!')),
     );
   }
 
@@ -147,9 +109,9 @@ class _NilaiSiswaPageState extends State<NilaiSiswaPage> {
                     // 3 Kotak Filter Informasi (Kelas, Mapel, Semester)
                     Row(
                       children: [
-                        Expanded(child: _buildInfoCard("Kelas", "8A")),
+                        Expanded(child: _buildInfoCard("Kelas", _className)),
                         const SizedBox(width: 8),
-                        Expanded(child: _buildInfoCard("Mapel", "Matematika")),
+                        Expanded(child: _buildInfoCard("Mapel", _subject)),
                         const SizedBox(width: 8),
                         Expanded(child: _buildInfoCard("Semester", "Ganjil")),
                       ],
@@ -279,7 +241,7 @@ class _NilaiSiswaPageState extends State<NilaiSiswaPage> {
                                     // Tombol Edit (Ikon Pensil)
                                     IconButton(
                                       icon: const Icon(Icons.edit_outlined, size: 18, color: Color(0xFF1976D2)),
-                                      onPressed: () => _showEditDialog(student),
+                                      onPressed: () => _openInputGrade(index),
                                       constraints: const BoxConstraints(),
                                       padding: const EdgeInsets.only(left: 12),
                                     ),
