@@ -1,5 +1,7 @@
 import 'package:intl/intl.dart';
 
+import '../../../core/utils/name_utils.dart';
+
 /// Nilai UTS & UAS satu siswa untuk satu mata pelajaran.
 ///
 /// Dibuat immutable: perubahan nilai menghasilkan objek baru lewat [copyWith],
@@ -54,11 +56,7 @@ class StudentGrade {
   double get average => (uts + uas) / 2;
 
   /// "AR" dari "Ahmad Rizki".
-  String get initials {
-    final words = name.trim().split(RegExp(r'\s+')).where((w) => w.isNotEmpty);
-    final result = words.take(2).map((w) => w[0].toUpperCase()).join();
-    return result.isEmpty ? '?' : result;
-  }
+  String get initials => nameInitials(name);
 
   static bool isValidScore(int? score) =>
       score != null && score >= minScore && score <= maxScore;

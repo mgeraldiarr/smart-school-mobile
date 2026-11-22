@@ -2,21 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:google_mlkit_face_detection/google_mlkit_face_detection.dart';
 
-import '../page10/absensi_manual.dart';
-import 'teacher/models/teacher_schedule.dart';
-import 'verifikasi_kehadiran.dart';
+import 'manual_attendance_screen.dart';
+import '../../teacher/models/teacher_schedule.dart';
+import 'attendance_verification_screen.dart';
 
 // HALAMAN PEMINDAI WAJAH
-class PemindaiWajahPage extends StatefulWidget {
+class FaceScanScreen extends StatefulWidget {
   final TeacherSchedule schedule;
 
-  const PemindaiWajahPage({super.key, required this.schedule});
+  const FaceScanScreen({super.key, required this.schedule});
 
   @override
-  State<PemindaiWajahPage> createState() => _PemindaiWajahPageState();
+  State<FaceScanScreen> createState() => _FaceScanScreenState();
 }
 
-class _PemindaiWajahPageState extends State<PemindaiWajahPage> {
+class _FaceScanScreenState extends State<FaceScanScreen> {
   CameraController? cameraController;
 
   // STATUS FLASH, PEMINDAIAN, DAN KAMERA
@@ -164,7 +164,7 @@ class _PemindaiWajahPageState extends State<PemindaiWajahPage> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => VerifikasiKehadiranPage(
+          builder: (context) => AttendanceVerificationScreen(
             schedule: widget.schedule,
             detectedFaceCount: faces.length,
           ),
@@ -478,7 +478,8 @@ class _PemindaiWajahPageState extends State<PemindaiWajahPage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const AbsensiManualPage(),
+                              builder: (context) =>
+                                  const ManualAttendanceScreen(),
                             ),
                           );
                         },

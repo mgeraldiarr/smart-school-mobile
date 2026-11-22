@@ -1,38 +1,46 @@
 import 'package:flutter/material.dart';
 
-// Model Data Siswa
-class Student {
-  final int id;
-  final String name;
-  final String nis;
-  String? status; // 'Hadir', 'Sakit', 'Izin', 'Alpha', atau null
+import '../models/manual_attendance_entry.dart';
 
-  Student({
-    required this.id,
-    required this.name,
-    required this.nis,
-    this.status,
-  });
-}
-
-class AbsensiManualPage extends StatefulWidget {
-  const AbsensiManualPage({super.key});
+class ManualAttendanceScreen extends StatefulWidget {
+  const ManualAttendanceScreen({super.key});
 
   @override
-  State<AbsensiManualPage> createState() => _AbsensiManualPageState();
+  State<ManualAttendanceScreen> createState() => _ManualAttendanceScreenState();
 }
 
-class _AbsensiManualPageState extends State<AbsensiManualPage> {
+class _ManualAttendanceScreenState extends State<ManualAttendanceScreen> {
   // Data Dummy Siswa
-  final List<Student> _students = [
-    Student(id: 1, name: "Ahmad Rizki", nis: "20260001", status: "Hadir"),
-    Student(id: 2, name: "Budi Santoso", nis: "20260002", status: null),
-    Student(id: 3, name: "Dinda Putri", nis: "20260003", status: "Izin"),
-    Student(id: 4, name: "Rizki Fajar", nis: "20260004", status: "Sakit"),
+  final List<ManualAttendanceEntry> _students = [
+    ManualAttendanceEntry(
+      id: 1,
+      name: "Ahmad Rizki",
+      nis: "20260001",
+      status: "Hadir",
+    ),
+    ManualAttendanceEntry(
+      id: 2,
+      name: "Budi Santoso",
+      nis: "20260002",
+      status: null,
+    ),
+    ManualAttendanceEntry(
+      id: 3,
+      name: "Dinda Putri",
+      nis: "20260003",
+      status: "Izin",
+    ),
+    ManualAttendanceEntry(
+      id: 4,
+      name: "Rizki Fajar",
+      nis: "20260004",
+      status: "Sakit",
+    ),
   ];
 
   String _searchQuery = "";
-  int _selectedFilterIndex = 0; // 0: Semua, 1: Belum Absen (termasuk Alpha & null), 2: Sudah Absen
+  int _selectedFilterIndex =
+      0; // 0: Semua, 1: Belum Absen (termasuk Alpha & null), 2: Sudah Absen
 
   // Helper Warna Status
   Color _getStatusBgColor(String? status) {
@@ -94,14 +102,19 @@ class _AbsensiManualPageState extends State<AbsensiManualPage> {
   Widget build(BuildContext context) {
     // Perhitungan Angka Dinamis Real-Time
     int totalSiswa = _students.length;
-    int belumAbsenCount = _students.where((s) => _isBelumAbsen(s.status)).length;
-    int sudahAbsenCount = _students.where((s) => !_isBelumAbsen(s.status)).length;
+    int belumAbsenCount = _students
+        .where((s) => _isBelumAbsen(s.status))
+        .length;
+    int sudahAbsenCount = _students
+        .where((s) => !_isBelumAbsen(s.status))
+        .length;
 
     // Filter List berdasarkan pencarian dan tab filter
     final filteredStudents = _students.where((student) {
-      final matchesSearch = student.name.toLowerCase().contains(_searchQuery.toLowerCase()) ||
+      final matchesSearch =
+          student.name.toLowerCase().contains(_searchQuery.toLowerCase()) ||
           student.nis.contains(_searchQuery);
-      
+
       if (_selectedFilterIndex == 1) {
         // Tab Belum Absen: Menampilkan yang null atau Alpha
         return matchesSearch && _isBelumAbsen(student.status);
@@ -125,7 +138,11 @@ class _AbsensiManualPageState extends State<AbsensiManualPage> {
               borderRadius: BorderRadius.circular(12),
             ),
             child: IconButton(
-              icon: const Icon(Icons.arrow_back_ios_new, color: Color(0xFF1E88E5), size: 18),
+              icon: const Icon(
+                Icons.arrow_back_ios_new,
+                color: Color(0xFF1E88E5),
+                size: 18,
+              ),
               onPressed: () => Navigator.of(context).maybePop(),
             ),
           ),
@@ -135,7 +152,11 @@ class _AbsensiManualPageState extends State<AbsensiManualPage> {
           children: const [
             Text(
               "Absensi Manual",
-              style: TextStyle(color: Color(0xFF1E293B), fontWeight: FontWeight.bold, fontSize: 18),
+              style: TextStyle(
+                color: Color(0xFF1E293B),
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ),
             ),
             SizedBox(height: 2),
             Text(
@@ -150,7 +171,10 @@ class _AbsensiManualPageState extends State<AbsensiManualPage> {
           children: [
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16.0,
+                  vertical: 8.0,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -169,7 +193,11 @@ class _AbsensiManualPageState extends State<AbsensiManualPage> {
                               color: Colors.white.withValues(alpha: 0.2),
                               borderRadius: BorderRadius.circular(12),
                             ),
-                            child: const Icon(Icons.menu_book_rounded, color: Colors.white, size: 24),
+                            child: const Icon(
+                              Icons.menu_book_rounded,
+                              color: Colors.white,
+                              size: 24,
+                            ),
                           ),
                           const SizedBox(width: 12),
                           Expanded(
@@ -178,27 +206,41 @@ class _AbsensiManualPageState extends State<AbsensiManualPage> {
                               children: const [
                                 Text(
                                   "Matematika",
-                                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
                                 ),
                                 SizedBox(height: 4),
                                 Text(
                                   "07.00 - 08.30 • Pak Ahmad",
-                                  style: TextStyle(color: Colors.white70, fontSize: 12),
+                                  style: TextStyle(
+                                    color: Colors.white70,
+                                    fontSize: 12,
+                                  ),
                                 ),
                               ],
                             ),
                           ),
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 6,
+                            ),
                             decoration: BoxDecoration(
                               color: Colors.white.withValues(alpha: 0.25),
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: const Text(
                               "Berlangsung",
-                              style: TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.w500),
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 11,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
-                          )
+                          ),
                         ],
                       ),
                     ),
@@ -214,7 +256,11 @@ class _AbsensiManualPageState extends State<AbsensiManualPage> {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Icon(Icons.info_outline, color: Color(0xFF1565C0), size: 20),
+                          const Icon(
+                            Icons.info_outline,
+                            color: Color(0xFF1565C0),
+                            size: 20,
+                          ),
                           const SizedBox(width: 10),
                           Expanded(
                             child: Column(
@@ -222,12 +268,19 @@ class _AbsensiManualPageState extends State<AbsensiManualPage> {
                               children: const [
                                 Text(
                                   "Pilih status kehadiran siswa",
-                                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: Color(0xFF1565C0)),
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 13,
+                                    color: Color(0xFF1565C0),
+                                  ),
                                 ),
                                 SizedBox(height: 2),
                                 Text(
                                   "Gunakan absensi manual jika pemindaian wajah tidak dapat dilakukan.",
-                                  style: TextStyle(fontSize: 11, color: Color(0xFF5C6BC0)),
+                                  style: TextStyle(
+                                    fontSize: 11,
+                                    color: Color(0xFF5C6BC0),
+                                  ),
                                 ),
                               ],
                             ),
@@ -245,10 +298,14 @@ class _AbsensiManualPageState extends State<AbsensiManualPage> {
                         border: Border.all(color: Colors.grey.shade200),
                       ),
                       child: TextField(
-                        onChanged: (value) => setState(() => _searchQuery = value),
+                        onChanged: (value) =>
+                            setState(() => _searchQuery = value),
                         decoration: const InputDecoration(
                           hintText: "Cari nama atau NIS siswa",
-                          hintStyle: TextStyle(color: Colors.grey, fontSize: 13),
+                          hintStyle: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 13,
+                          ),
                           prefixIcon: Icon(Icons.search, color: Colors.grey),
                           border: InputBorder.none,
                           contentPadding: EdgeInsets.symmetric(vertical: 12),
@@ -278,11 +335,19 @@ class _AbsensiManualPageState extends State<AbsensiManualPage> {
                       children: [
                         const Text(
                           "Daftar Siswa",
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Color(0xFF1E293B)),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                            color: Color(0xFF1E293B),
+                          ),
                         ),
                         Text(
                           "$sudahAbsenCount perubahan",
-                          style: const TextStyle(fontSize: 12, color: Color(0xFF1565C0), fontWeight: FontWeight.w500),
+                          style: const TextStyle(
+                            fontSize: 12,
+                            color: Color(0xFF1565C0),
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ],
                     ),
@@ -299,18 +364,30 @@ class _AbsensiManualPageState extends State<AbsensiManualPage> {
                           ? const Padding(
                               padding: EdgeInsets.all(24.0),
                               child: Center(
-                                child: Text("Siswa tidak ditemukan", style: TextStyle(color: Colors.grey, fontSize: 13)),
+                                child: Text(
+                                  "Siswa tidak ditemukan",
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 13,
+                                  ),
+                                ),
                               ),
                             )
                           : ListView.separated(
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
                               itemCount: filteredStudents.length,
-                              separatorBuilder: (context, index) => Divider(height: 1, color: Colors.grey.shade200),
+                              separatorBuilder: (context, index) => Divider(
+                                height: 1,
+                                color: Colors.grey.shade200,
+                              ),
                               itemBuilder: (context, index) {
                                 final student = filteredStudents[index];
                                 return Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                    vertical: 10,
+                                  ),
                                   child: Row(
                                     children: [
                                       // Nomor Urut
@@ -319,12 +396,17 @@ class _AbsensiManualPageState extends State<AbsensiManualPage> {
                                         height: 36,
                                         decoration: BoxDecoration(
                                           color: const Color(0xFFEBF3FA),
-                                          borderRadius: BorderRadius.circular(8),
+                                          borderRadius: BorderRadius.circular(
+                                            8,
+                                          ),
                                         ),
                                         alignment: Alignment.center,
                                         child: Text(
                                           "${student.id}",
-                                          style: const TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF1565C0)),
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Color(0xFF1565C0),
+                                          ),
                                         ),
                                       ),
                                       const SizedBox(width: 12),
@@ -332,16 +414,24 @@ class _AbsensiManualPageState extends State<AbsensiManualPage> {
                                       // Nama & NIS Siswa
                                       Expanded(
                                         child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               student.name,
-                                              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: Color(0xFF1E293B)),
+                                              style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 13,
+                                                color: Color(0xFF1E293B),
+                                              ),
                                             ),
                                             const SizedBox(height: 2),
                                             Text(
                                               "NIS ${student.nis}",
-                                              style: const TextStyle(fontSize: 11, color: Colors.grey),
+                                              style: const TextStyle(
+                                                fontSize: 11,
+                                                color: Colors.grey,
+                                              ),
                                             ),
                                           ],
                                         ),
@@ -349,58 +439,112 @@ class _AbsensiManualPageState extends State<AbsensiManualPage> {
 
                                       // ComboBox Status Kehadiran
                                       Container(
-                                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 8,
+                                          vertical: 2,
+                                        ),
                                         decoration: BoxDecoration(
-                                          color: _getStatusBgColor(student.status),
-                                          borderRadius: BorderRadius.circular(10),
-                                          border: Border.all(color: _getStatusBorderColor(student.status)),
+                                          color: _getStatusBgColor(
+                                            student.status,
+                                          ),
+                                          borderRadius: BorderRadius.circular(
+                                            10,
+                                          ),
+                                          border: Border.all(
+                                            color: _getStatusBorderColor(
+                                              student.status,
+                                            ),
+                                          ),
                                         ),
                                         child: DropdownButtonHideUnderline(
                                           child: DropdownButton<String>(
                                             value: student.status,
-                                            hint: const Text("Pilih", style: TextStyle(fontSize: 12)),
+                                            hint: const Text(
+                                              "Pilih",
+                                              style: TextStyle(fontSize: 12),
+                                            ),
                                             isDense: true,
-                                            icon: Icon(Icons.keyboard_arrow_down, color: _getStatusTextColor(student.status), size: 18),
+                                            icon: Icon(
+                                              Icons.keyboard_arrow_down,
+                                              color: _getStatusTextColor(
+                                                student.status,
+                                              ),
+                                              size: 18,
+                                            ),
                                             onChanged: (String? newValue) {
                                               setState(() {
                                                 student.status = newValue;
                                               });
                                             },
-                                            items: <String>['Hadir', 'Sakit', 'Izin', 'Alpha'].map<DropdownMenuItem<String>>((String value) {
-                                              return DropdownMenuItem<String>(
-                                                value: value,
-                                                child: Row(
-                                                  mainAxisSize: MainAxisSize.min,
-                                                  children: [
-                                                    // Badge Inisial
-                                                    Container(
-                                                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                                                      decoration: BoxDecoration(
-                                                        color: _getStatusBgColor(value),
-                                                        borderRadius: BorderRadius.circular(4),
-                                                      ),
-                                                      child: Text(
-                                                        _getStatusInitial(value),
-                                                        style: TextStyle(
-                                                          fontWeight: FontWeight.bold,
-                                                          fontSize: 11,
-                                                          color: _getStatusTextColor(value),
+                                            items:
+                                                <String>[
+                                                  'Hadir',
+                                                  'Sakit',
+                                                  'Izin',
+                                                  'Alpha',
+                                                ].map<
+                                                  DropdownMenuItem<String>
+                                                >((String value) {
+                                                  return DropdownMenuItem<
+                                                    String
+                                                  >(
+                                                    value: value,
+                                                    child: Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      children: [
+                                                        // Badge Inisial
+                                                        Container(
+                                                          padding:
+                                                              const EdgeInsets.symmetric(
+                                                                horizontal: 6,
+                                                                vertical: 2,
+                                                              ),
+                                                          decoration: BoxDecoration(
+                                                            color:
+                                                                _getStatusBgColor(
+                                                                  value,
+                                                                ),
+                                                            borderRadius:
+                                                                BorderRadius.circular(
+                                                                  4,
+                                                                ),
+                                                          ),
+                                                          child: Text(
+                                                            _getStatusInitial(
+                                                              value,
+                                                            ),
+                                                            style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              fontSize: 11,
+                                                              color:
+                                                                  _getStatusTextColor(
+                                                                    value,
+                                                                  ),
+                                                            ),
+                                                          ),
                                                         ),
-                                                      ),
+                                                        const SizedBox(
+                                                          width: 6,
+                                                        ),
+                                                        Text(
+                                                          value,
+                                                          style: TextStyle(
+                                                            fontSize: 12,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            color:
+                                                                _getStatusTextColor(
+                                                                  value,
+                                                                ),
+                                                          ),
+                                                        ),
+                                                      ],
                                                     ),
-                                                    const SizedBox(width: 6),
-                                                    Text(
-                                                      value,
-                                                      style: TextStyle(
-                                                        fontSize: 12,
-                                                        fontWeight: FontWeight.w600,
-                                                        color: _getStatusTextColor(value),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              );
-                                            }).toList(),
+                                                  );
+                                                }).toList(),
                                           ),
                                         ),
                                       ),
@@ -440,7 +584,11 @@ class _AbsensiManualPageState extends State<AbsensiManualPage> {
                       ),
                       Text(
                         "$sudahAbsenCount siswa",
-                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: Color(0xFF1E293B)),
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 13,
+                          color: Color(0xFF1E293B),
+                        ),
                       ),
                     ],
                   ),
@@ -449,7 +597,11 @@ class _AbsensiManualPageState extends State<AbsensiManualPage> {
                     child: ElevatedButton(
                       onPressed: () {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text("Absensi $sudahAbsenCount siswa berhasil disimpan!")),
+                          SnackBar(
+                            content: Text(
+                              "Absensi $sudahAbsenCount siswa berhasil disimpan!",
+                            ),
+                          ),
                         );
                       },
                       style: ElevatedButton.styleFrom(
@@ -467,7 +619,11 @@ class _AbsensiManualPageState extends State<AbsensiManualPage> {
                           SizedBox(height: 2),
                           Text(
                             "Simpan Absensi",
-                            style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Colors.white),
+                            style: TextStyle(
+                              fontSize: 11,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
                           ),
                         ],
                       ),

@@ -15,8 +15,7 @@ class _TeacherNotificationScreenState extends State<TeacherNotificationScreen> {
   final List<_TeacherNotificationItem> _todayItems = [
     _TeacherNotificationItem(
       title: 'Kehadiran Siswa',
-      message:
-          'Ahmad Rizki telah hadir pada mata pelajaran Matematika pukul 07.15 WIB.',
+      message: 'Ahmad Rizki telah hadir pada mata pelajaran Matematika pukul 07.15 WIB.',
       time: '07.16',
       icon: Icons.check_rounded,
       iconColor: const Color(0xFF1D8F5A),
@@ -25,8 +24,7 @@ class _TeacherNotificationScreenState extends State<TeacherNotificationScreen> {
     ),
     _TeacherNotificationItem(
       title: 'Mata Pelajaran Selanjutnya',
-      message:
-          'Pengingat: Anda akan mengajar Matematika di kelas 8B pukul 10.15 - 11.45.',
+      message: 'Pengingat: Anda akan mengajar Matematika di kelas 8B pukul 10.15 - 11.45.',
       time: '09.45',
       icon: Icons.calendar_today_outlined,
       iconColor: AppColors.brandBlue,
@@ -36,8 +34,7 @@ class _TeacherNotificationScreenState extends State<TeacherNotificationScreen> {
     ),
     _TeacherNotificationItem(
       title: 'Informasi Pembelajaran',
-      message:
-          'Pak Ahmad, guru Matematika kelas 8A, berhalangan mengajar pukul 07.00 - 08.30 karena rapat sekolah.',
+      message: 'Pak Ahmad, guru Matematika kelas 8A, berhalangan mengajar pukul 07.00 - 08.30 karena rapat sekolah.',
       time: '06.50',
       icon: Icons.info_outline_rounded,
       iconColor: const Color(0xFFD97706),
@@ -252,9 +249,7 @@ class _NotificationCard extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(18),
         side: BorderSide(
-          color: item.isUnread
-              ? const Color(0xFFBFD9F6)
-              : AppColors.border,
+          color: item.isUnread ? const Color(0xFFBFD9F6) : AppColors.border,
           width: item.isUnread ? 1.2 : 1.0,
         ),
       ),
@@ -275,11 +270,7 @@ class _NotificationCard extends StatelessWidget {
                     color: item.iconBackground,
                     borderRadius: BorderRadius.circular(14),
                   ),
-                  child: Icon(
-                    item.icon,
-                    color: item.iconColor,
-                    size: 22,
-                  ),
+                  child: Icon(item.icon, color: item.iconColor, size: 22),
                 ),
               ),
               const SizedBox(width: 14),

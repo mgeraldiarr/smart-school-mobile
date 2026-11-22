@@ -18,6 +18,10 @@ analyzer:
     - windows/**
     - macos/**
     - linux/**
+  errors:
+    # Penanda TODO(api)/TODO(design) sengaja dipakai sebagai daftar pekerjaan
+    # lanjutan, jadi tidak perlu ditampilkan sebagai peringatan di IDE.
+    todo: ignore
 
 linter:
   # The lint rules applied to this project can be customized in the

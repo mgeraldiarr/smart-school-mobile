@@ -4,10 +4,10 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/constants/app_colors.dart';
+import '../../../core/utils/name_utils.dart';
 import '../../auth/providers/auth_provider.dart';
-import '../../konfirmasi_mengajar.dart';
+import '../../attendance/screens/teaching_confirmation_screen.dart';
 import '../providers/teacher_provider.dart';
-import '../teacher_name.dart';
 import '../widgets/schedule_card.dart';
 import 'teacher_notification_screen.dart';
 import 'teacher_unavailable_screen.dart';
@@ -131,7 +131,7 @@ class _TeacherDashboardScreenState extends State<TeacherDashboardScreen> {
             onStart: () => Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (_) =>
-                    KonfirmasiMengajarPage(schedule: remaining.first),
+                    TeachingConfirmationScreen(schedule: remaining.first),
               ),
             ),
             onUnavailable: () => Navigator.of(context).push(
@@ -239,7 +239,7 @@ class _DashboardHeader extends StatelessWidget {
                   ),
                 ),
                 child: Text(
-                  teacherInitials(fullName),
+                  nameInitials(fullName, fallback: 'G'),
                   style: GoogleFonts.poppins(
                     fontSize: 14,
                     fontWeight: FontWeight.w700,
@@ -251,7 +251,7 @@ class _DashboardHeader extends StatelessWidget {
           ),
           const SizedBox(height: 32),
           Text(
-            'Selamat ${_greeting(now.hour)}, ${teacherFirstName(fullName)}',
+            'Selamat ${_greeting(now.hour)}, ${firstName(fullName, fallback: 'Guru')}',
             style: GoogleFonts.poppins(
               fontSize: 20,
               fontWeight: FontWeight.w700,

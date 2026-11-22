@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:smart_school_mobile/core/utils/name_utils.dart';
 import 'package:smart_school_mobile/features/parent/models/parent_profile.dart';
 
 void main() {

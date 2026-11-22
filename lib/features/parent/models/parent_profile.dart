@@ -92,18 +92,6 @@ class LinkedStudent {
   }
 }
 
-/// "Ahmad Rizki" -> "AR". Dipakai untuk avatar saat foto belum tersedia.
-String nameInitials(String name, {String fallback = '?'}) {
-  final words = name
-      .split(',')
-      .first
-      .trim()
-      .split(RegExp(r'\s+'))
-      .where((w) => w.isNotEmpty);
-  final result = words.take(2).map((w) => w[0].toUpperCase()).join();
-  return result.isEmpty ? fallback : result;
-}
-
 Map<String, dynamic>? _map(dynamic value) =>
     value is Map<String, dynamic> ? value : null;
 

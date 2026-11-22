@@ -1,88 +1,107 @@
 import 'package:flutter/material.dart';
-// Import halaman Nilai Siswa dari page13 (sesuaikan jalur folder/file kamu)
-import 'package:smart_school_mobile/page13/nilai_siswa_page.dart';
 
-// Model untuk Data Mata Pelajaran
-class Lesson {
-  final String time;
-  final String subject;
-  final String teacher;
-  final String status; // 'Mengajar', 'Berhalangan', 'Terjadwal'
+import '../models/weekly_schedule.dart';
 
-  Lesson({
-    required this.time,
-    required this.subject,
-    required this.teacher,
-    required this.status,
-  });
-}
-
-// Model untuk Hari & Jadwalnya
-class DayScheduleModel {
-  final String dayName;
-  final String dateNum;
-  final List<Lesson> lessons;
-
-  DayScheduleModel({
-    required this.dayName,
-    required this.dateNum,
-    required this.lessons,
-  });
-}
-
-class JadwalPelajaranPage extends StatefulWidget {
-  final bool showBottomNav;
-
-  const JadwalPelajaranPage({super.key, this.showBottomNav = true});
+class TeacherScheduleScreen extends StatefulWidget {
+  const TeacherScheduleScreen({super.key});
 
   @override
-  State<JadwalPelajaranPage> createState() => _JadwalPelajaranPageState();
+  State<TeacherScheduleScreen> createState() => _TeacherScheduleScreenState();
 }
 
-class _JadwalPelajaranPageState extends State<JadwalPelajaranPage> {
+class _TeacherScheduleScreenState extends State<TeacherScheduleScreen> {
   int _selectedDayIndex = 0;
-  int _bottomNavIndex = 1; // Tab Jadwal aktif (indeks 1)
 
   // Data Dummy Berbeda Tiap Hari
-  final List<DayScheduleModel> _weeklySchedules = [
-    DayScheduleModel(
+  final List<DaySchedule> _weeklySchedules = [
+    DaySchedule(
       dayName: "Sen",
       dateNum: "5",
       lessons: [
-        Lesson(time: "07.00 - 08.30", subject: "Matematika", teacher: "Pak Ahmad", status: "Mengajar"),
-        Lesson(time: "08.30 - 09.30", subject: "Bahasa Indonesia", teacher: "Pak Budi", status: "Mengajar"),
+        Lesson(
+          time: "07.00 - 08.30",
+          subject: "Matematika",
+          teacher: "Pak Ahmad",
+          status: "Mengajar",
+        ),
+        Lesson(
+          time: "08.30 - 09.30",
+          subject: "Bahasa Indonesia",
+          teacher: "Pak Budi",
+          status: "Mengajar",
+        ),
       ],
     ),
-    DayScheduleModel(
+    DaySchedule(
       dayName: "Sel",
       dateNum: "6",
       lessons: [
-        Lesson(time: "07.00 - 08.30", subject: "PPKn", teacher: "Pak Joko", status: "Mengajar"),
-        Lesson(time: "08.30 - 10.00", subject: "IPS Terpadu", teacher: "Bu Ani", status: "Mengajar"),
+        Lesson(
+          time: "07.00 - 08.30",
+          subject: "PPKn",
+          teacher: "Pak Joko",
+          status: "Mengajar",
+        ),
+        Lesson(
+          time: "08.30 - 10.00",
+          subject: "IPS Terpadu",
+          teacher: "Bu Ani",
+          status: "Mengajar",
+        ),
       ],
     ),
-    DayScheduleModel(
+    DaySchedule(
       dayName: "Rab",
       dateNum: "7",
       lessons: [
-        Lesson(time: "07.00 - 08.30", subject: "Bahasa Inggris", teacher: "Bu Rina", status: "Mengajar"),
-        Lesson(time: "08.30 - 10.00", subject: "Seni Budaya", teacher: "Pak Dedi", status: "Terjadwal"),
+        Lesson(
+          time: "07.00 - 08.30",
+          subject: "Bahasa Inggris",
+          teacher: "Bu Rina",
+          status: "Mengajar",
+        ),
+        Lesson(
+          time: "08.30 - 10.00",
+          subject: "Seni Budaya",
+          teacher: "Pak Dedi",
+          status: "Terjadwal",
+        ),
       ],
     ),
-    DayScheduleModel(
+    DaySchedule(
       dayName: "Kam",
       dateNum: "8",
       lessons: [
-        Lesson(time: "07.00 - 08.30", subject: "Informatika", teacher: "Bu Maya", status: "Mengajar"),
-        Lesson(time: "08.30 - 10.00", subject: "Agama Islam", teacher: "Pak Ustadz", status: "Mengajar"),
+        Lesson(
+          time: "07.00 - 08.30",
+          subject: "Informatika",
+          teacher: "Bu Maya",
+          status: "Mengajar",
+        ),
+        Lesson(
+          time: "08.30 - 10.00",
+          subject: "Agama Islam",
+          teacher: "Pak Ustadz",
+          status: "Mengajar",
+        ),
       ],
     ),
-    DayScheduleModel(
+    DaySchedule(
       dayName: "Jum",
       dateNum: "9",
       lessons: [
-        Lesson(time: "07.00 - 08.30", subject: "Matematika", teacher: "Pak Ahmad", status: "Mengajar"),
-        Lesson(time: "08.30 - 09.30", subject: "Bahasa Indonesia", teacher: "Pak Budi", status: "Mengajar"),
+        Lesson(
+          time: "07.00 - 08.30",
+          subject: "Matematika",
+          teacher: "Pak Ahmad",
+          status: "Mengajar",
+        ),
+        Lesson(
+          time: "08.30 - 09.30",
+          subject: "Bahasa Indonesia",
+          teacher: "Pak Budi",
+          status: "Mengajar",
+        ),
       ],
     ),
   ];
@@ -168,18 +187,23 @@ class _JadwalPelajaranPageState extends State<JadwalPelajaranPage> {
                       width: 62,
                       margin: const EdgeInsets.symmetric(horizontal: 4),
                       decoration: BoxDecoration(
-                        color: isSelected ? const Color(0xFF1976D2) : Colors.white,
+                        color: isSelected
+                            ? const Color(0xFF1976D2)
+                            : Colors.white,
                         borderRadius: BorderRadius.circular(16),
                         border: Border.all(
-                          color: isSelected ? Colors.transparent : Colors.grey.shade200,
+                          color: isSelected
+                              ? Colors.transparent
+                              : Colors.grey.shade200,
                         ),
                         boxShadow: isSelected
                             ? [
                                 BoxShadow(
-                                  color: const Color(0xFF1976D2).withValues(alpha: 0.3),
+                                  color: const Color(0xFF1976D2)
+                                      .withValues(alpha: 0.3),
                                   blurRadius: 8,
                                   offset: const Offset(0, 4),
-                                )
+                                ),
                               ]
                             : [],
                       ),
@@ -191,7 +215,9 @@ class _JadwalPelajaranPageState extends State<JadwalPelajaranPage> {
                             style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w600,
-                              color: isSelected ? Colors.white70 : Colors.grey.shade600,
+                              color: isSelected
+                                  ? Colors.white70
+                                  : Colors.grey.shade600,
                             ),
                           ),
                           const SizedBox(height: 4),
@@ -200,7 +226,9 @@ class _JadwalPelajaranPageState extends State<JadwalPelajaranPage> {
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
-                              color: isSelected ? Colors.white : const Color(0xFF1E293B),
+                              color: isSelected
+                                  ? Colors.white
+                                  : const Color(0xFF1E293B),
                             ),
                           ),
                         ],
@@ -274,7 +302,8 @@ class _JadwalPelajaranPageState extends State<JadwalPelajaranPage> {
                                 const SizedBox(width: 12),
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         lesson.subject,
@@ -296,7 +325,10 @@ class _JadwalPelajaranPageState extends State<JadwalPelajaranPage> {
                                   ),
                                 ),
                                 Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 10,
+                                    vertical: 6,
+                                  ),
                                   decoration: BoxDecoration(
                                     color: _getStatusBgColor(lesson.status),
                                     borderRadius: BorderRadius.circular(10),
@@ -322,51 +354,6 @@ class _JadwalPelajaranPageState extends State<JadwalPelajaranPage> {
             ),
           ],
         ),
-      ),
-      bottomNavigationBar: !widget.showBottomNav
-          ? null
-          : BottomNavigationBar(
-        currentIndex: _bottomNavIndex,
-        onTap: (index) {
-          setState(() {
-            _bottomNavIndex = index;
-          });
-
-          // Jika tab Nilai (index 2) diklik, arahkan ke halaman Nilai Siswa
-          if (index == 2) {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => const NilaiSiswaPage()),
-            );
-          }
-        },
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: const Color(0xFF1976D2),
-        unselectedItemColor: Colors.grey,
-        selectedFontSize: 11,
-        unselectedFontSize: 11,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined),
-            activeIcon: Icon(Icons.home),
-            label: "Beranda",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_month_outlined),
-            activeIcon: Icon(Icons.calendar_month),
-            label: "Jadwal",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.assignment_outlined),
-            activeIcon: Icon(Icons.assignment),
-            label: "Nilai",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline),
-            activeIcon: Icon(Icons.person),
-            label: "Profil",
-          ),
-        ],
       ),
     );
   }

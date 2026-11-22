@@ -3,10 +3,10 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../core/constants/app_colors.dart';
-import '../../../pages/dashboard_wali_murid.dart';
-import '../../../pages/jadwal_pelajaran_wali_murid.dart';
-import '../../../pages/notifikasi_wali_murid.dart';
-import '../../../pages/rekap_kehadiran_wali_murid.dart';
+import 'parent_dashboard_screen.dart';
+import 'parent_schedule_screen.dart';
+import 'parent_notification_screen.dart';
+import 'parent_attendance_screen.dart';
 import 'parent_academic_screen.dart';
 import 'parent_profile_screen.dart';
 
@@ -40,7 +40,7 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
       MaterialPageRoute(
         builder: (ctx) => Scaffold(
           backgroundColor: const Color(0xFFF5F8FD),
-          body: NotifikasiWaliMurid(onBack: () => Navigator.of(ctx).pop()),
+          body: ParentNotificationScreen(onBack: () => Navigator.of(ctx).pop()),
         ),
       ),
     );
@@ -62,14 +62,14 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
         body: IndexedStack(
           index: _currentIndex,
           children: [
-            DashboardWaliMurid(
+            ParentDashboardScreen(
               onOpenAttendance: () => setState(() => _currentIndex = 1),
               onOpenSchedule: () => setState(() => _currentIndex = 2),
               onOpenNotifications: _openNotifications,
             ),
-            const RekapKehadiranWaliMurid(),
-            const JadwalPelajaranWaliMurid(),
-            const ParentAcademicScreen(showBottomNav: false),
+            const ParentAttendanceScreen(),
+            const ParentScheduleScreen(),
+            const ParentAcademicScreen(),
             const ParentProfileScreen(),
           ],
         ),

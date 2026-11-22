@@ -1,20 +1,18 @@
-
 import 'package:flutter/material.dart';
-import '../constants/app_colors.dart';
 
-class NotifikasiWaliMurid extends StatefulWidget {
+import '../../../core/constants/app_colors.dart';
+
+class ParentNotificationScreen extends StatefulWidget {
   final VoidCallback onBack;
 
-  const NotifikasiWaliMurid({
-    super.key,
-    required this.onBack,
-  });
+  const ParentNotificationScreen({super.key, required this.onBack});
 
   @override
-  State<NotifikasiWaliMurid> createState() => _NotifikasiWaliMuridState();
+  State<ParentNotificationScreen> createState() =>
+      _ParentNotificationScreenState();
 }
 
-class _NotifikasiWaliMuridState extends State<NotifikasiWaliMurid> {
+class _ParentNotificationScreenState extends State<ParentNotificationScreen> {
   bool _allRead = false;
 
   final List<Map<String, dynamic>> _todayNotifications = [
@@ -23,8 +21,7 @@ class _NotifikasiWaliMuridState extends State<NotifikasiWaliMurid> {
       'color': const Color(0xFF079B68),
       'background': const Color(0xFFE0F6ED),
       'title': 'Kehadiran Siswa',
-      'description':
-          'Ahmad Rizki telah hadir pada mata pelajaran Matematika pukul 07.15 WIB.',
+      'description': 'Ahmad Rizki telah hadir pada mata pelajaran Matematika pukul 07.15 WIB.',
       'time': '07.16',
     },
     {
@@ -32,8 +29,7 @@ class _NotifikasiWaliMuridState extends State<NotifikasiWaliMurid> {
       'color': const Color(0xFFFF8500),
       'background': const Color(0xFFFFF0DC),
       'title': 'Informasi Pembelajaran',
-      'description':
-          'Pak Ahmad, guru Matematika kelas 8A, berhalangan mengajar pukul 07.00 - 08.30 karena rapat sekolah.',
+      'description': 'Pak Ahmad, guru Matematika kelas 8A, berhalangan mengajar pukul 07.00 - 08.30 karena rapat sekolah.',
       'time': '06.50',
     },
   ];
@@ -41,7 +37,7 @@ class _NotifikasiWaliMuridState extends State<NotifikasiWaliMurid> {
   final List<Map<String, dynamic>> _yesterdayNotifications = [
     {
       'icon': Icons.bookmark_border_rounded,
-      'color': primaryBlue,
+      'color': AppColors.accentBlue,
       'background': const Color(0xFFE5F1FF),
       'title': 'Nilai Diperbarui',
       'description':
@@ -55,7 +51,7 @@ class _NotifikasiWaliMuridState extends State<NotifikasiWaliMurid> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: pageBackground,
+      backgroundColor: AppColors.pageBackground,
       body: SafeArea(
         child: Column(
           children: [
@@ -69,10 +65,7 @@ class _NotifikasiWaliMuridState extends State<NotifikasiWaliMurid> {
                   ..._todayNotifications.map(
                     (item) => Padding(
                       padding: const EdgeInsets.only(bottom: 12),
-                      child: _buildNotificationCard(
-                        item,
-                        unread: !_allRead,
-                      ),
+                      child: _buildNotificationCard(item, unread: !_allRead),
                     ),
                   ),
                   const SizedBox(height: 1),
@@ -81,10 +74,7 @@ class _NotifikasiWaliMuridState extends State<NotifikasiWaliMurid> {
                   ..._yesterdayNotifications.map(
                     (item) => Padding(
                       padding: const EdgeInsets.only(bottom: 12),
-                      child: _buildNotificationCard(
-                        item,
-                        unread: false,
-                      ),
+                      child: _buildNotificationCard(item, unread: false),
                     ),
                   ),
                 ],
@@ -104,7 +94,7 @@ class _NotifikasiWaliMuridState extends State<NotifikasiWaliMurid> {
         color: Colors.white,
         border: Border(
           bottom: BorderSide(
-            color: borderColor.withValues(alpha: 0.65),
+            color: AppColors.softBorder.withValues(alpha: 0.65),
           ),
         ),
       ),
@@ -121,7 +111,7 @@ class _NotifikasiWaliMuridState extends State<NotifikasiWaliMurid> {
                 height: 44,
                 child: Icon(
                   Icons.chevron_left_rounded,
-                  color: primaryBlue,
+                  color: AppColors.accentBlue,
                   size: 30,
                 ),
               ),
@@ -137,7 +127,7 @@ class _NotifikasiWaliMuridState extends State<NotifikasiWaliMurid> {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                    color: textDark,
+                    color: AppColors.slateText,
                     fontSize: 20,
                     fontWeight: FontWeight.w800,
                   ),
@@ -148,7 +138,7 @@ class _NotifikasiWaliMuridState extends State<NotifikasiWaliMurid> {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
-                    color: textMuted,
+                    color: AppColors.slateMuted,
                     fontSize: 12,
                   ),
                 ),
@@ -167,7 +157,7 @@ class _NotifikasiWaliMuridState extends State<NotifikasiWaliMurid> {
               child: Text(
                 'Tandai dibaca',
                 style: TextStyle(
-                  color: primaryBlue,
+                  color: AppColors.accentBlue,
                   fontSize: 12,
                   fontWeight: FontWeight.w700,
                 ),
@@ -206,9 +196,7 @@ class _NotifikasiWaliMuridState extends State<NotifikasiWaliMurid> {
         color: unread ? const Color(0xFFFBFDFF) : Colors.white,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: unread
-              ? const Color(0xFFC9E0FC)
-              : const Color(0xFFE0E9F5),
+          color: unread ? const Color(0xFFC9E0FC) : const Color(0xFFE0E9F5),
           width: 1.2,
         ),
       ),
@@ -222,11 +210,7 @@ class _NotifikasiWaliMuridState extends State<NotifikasiWaliMurid> {
               color: iconBackground,
               borderRadius: BorderRadius.circular(15),
             ),
-            child: Icon(
-              item['icon'] as IconData,
-              color: iconColor,
-              size: 25,
-            ),
+            child: Icon(item['icon'] as IconData, color: iconColor, size: 25),
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -240,7 +224,7 @@ class _NotifikasiWaliMuridState extends State<NotifikasiWaliMurid> {
                       child: Text(
                         item['title'] as String,
                         style: const TextStyle(
-                          color: textDark,
+                          color: AppColors.slateText,
                           fontSize: 13,
                           fontWeight: FontWeight.w800,
                         ),

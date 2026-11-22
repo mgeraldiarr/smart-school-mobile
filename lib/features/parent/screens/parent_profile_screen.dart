@@ -4,6 +4,9 @@ import 'package:provider/provider.dart';
 
 import '../../../core/constants/app_colors.dart';
 import '../../../core/services/profile_photo_controller.dart';
+import '../../../core/widgets/app_dialog.dart';
+import '../../../core/widgets/change_password_dialog.dart';
+import '../../../core/utils/name_utils.dart';
 import '../../../core/widgets/logout_confirm_dialog.dart';
 import '../../../core/widgets/profile_avatar.dart';
 import '../../../core/widgets/profile_photo_picker.dart';
@@ -71,11 +74,8 @@ class _ParentProfileScreenState extends State<ParentProfileScreen> {
   }
 
   Future<void> _changePassword() async {
-    final changed = await showDialog<bool>(
-      context: context,
-      builder: (_) => const _ChangePasswordDialog(),
-    );
-    if (changed != true || !mounted) return;
+    final changed = await showChangePasswordDialog(context);
+    if (!changed || !mounted) return;
 
     _showSnackBar(
       'Kata sandi berhasil diperbarui.',
@@ -478,54 +478,6 @@ class _ActionTile extends StatelessWidget {
   }
 }
 
-// ==========================================
-// DIALOG
-// Dialog dibuat sebagai StatefulWidget supaya TextEditingController
-// di-dispose dengan benar saat dialog ditutup.
-// ==========================================
-
-InputDecoration _fieldDecoration(String label, IconData icon) {
-  return InputDecoration(
-    labelText: label,
-    labelStyle: GoogleFonts.poppins(fontSize: 12.5),
-    prefixIcon: Icon(icon),
-    border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-  );
-}
-
-Widget _dialogTitle(String text) => Text(
-  text,
-  style: GoogleFonts.poppins(
-    fontSize: 17,
-    fontWeight: FontWeight.w700,
-    color: AppColors.textDark,
-  ),
-);
-
-List<Widget> _dialogActions(BuildContext context, VoidCallback onSave) => [
-  TextButton(
-    onPressed: () => Navigator.of(context).pop(),
-    child: Text(
-      'Batal',
-      style: GoogleFonts.poppins(color: AppColors.textMuted),
-    ),
-  ),
-  ElevatedButton(
-    onPressed: onSave,
-    style: ElevatedButton.styleFrom(
-      backgroundColor: AppColors.brandBlue,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-    ),
-    child: Text(
-      'Simpan',
-      style: GoogleFonts.poppins(
-        fontWeight: FontWeight.w600,
-        color: Colors.white,
-      ),
-    ),
-  ),
-];
-
 class _EditProfileDialog extends StatefulWidget {
   final ParentProfile profile;
 
@@ -573,7 +525,7 @@ class _EditProfileDialogState extends State<_EditProfileDialog> {
     return AlertDialog(
       backgroundColor: AppColors.surface,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      title: _dialogTitle('Edit Profil'),
+      title: dialogTitle('Edit Profil'),
       content: Form(
         key: _formKey,
         child: SingleChildScrollView(
@@ -584,7 +536,7 @@ class _EditProfileDialogState extends State<_EditProfileDialog> {
                 controller: _nameController,
                 textCapitalization: TextCapitalization.words,
                 style: GoogleFonts.poppins(fontSize: 13.5),
-                decoration: _fieldDecoration(
+                decoration: dialogFieldDecoration(
                   'Nama Lengkap',
                   Icons.person_outline_rounded,
                 ),
@@ -597,7 +549,7 @@ class _EditProfileDialogState extends State<_EditProfileDialog> {
                 controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
                 style: GoogleFonts.poppins(fontSize: 13.5),
-                decoration: _fieldDecoration(
+                decoration: dialogFieldDecoration(
                   'Email',
                   Icons.mail_outline_rounded,
                 ),
@@ -609,95 +561,7 @@ class _EditProfileDialogState extends State<_EditProfileDialog> {
           ),
         ),
       ),
-      actions: _dialogActions(context, _save),
-    );
-  }
-}
-
-class _ChangePasswordDialog extends StatefulWidget {
-  const _ChangePasswordDialog();
-
-  @override
-  State<_ChangePasswordDialog> createState() => _ChangePasswordDialogState();
-}
-
-class _ChangePasswordDialogState extends State<_ChangePasswordDialog> {
-  static const int _minLength = 8;
-
-  final _formKey = GlobalKey<FormState>();
-  final _oldController = TextEditingController();
-  final _newController = TextEditingController();
-  final _confirmController = TextEditingController();
-
-  @override
-  void dispose() {
-    _oldController.dispose();
-    _newController.dispose();
-    _confirmController.dispose();
-    super.dispose();
-  }
-
-  void _save() {
-    if (!_formKey.currentState!.validate()) return;
-    // TODO(api): kirim ke endpoint ubah kata sandi (belum ada di ApiConstants).
-    Navigator.of(context).pop(true);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      backgroundColor: AppColors.surface,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      title: _dialogTitle('Ubah Kata Sandi'),
-      content: Form(
-        key: _formKey,
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextFormField(
-                controller: _oldController,
-                obscureText: true,
-                style: GoogleFonts.poppins(fontSize: 13.5),
-                decoration: _fieldDecoration(
-                  'Kata Sandi Lama',
-                  Icons.lock_outline_rounded,
-                ),
-                validator: (v) => (v == null || v.isEmpty)
-                    ? 'Kata sandi lama wajib diisi.'
-                    : null,
-              ),
-              const SizedBox(height: 12),
-              TextFormField(
-                controller: _newController,
-                obscureText: true,
-                style: GoogleFonts.poppins(fontSize: 13.5),
-                decoration: _fieldDecoration(
-                  'Kata Sandi Baru (Min. $_minLength Karakter)',
-                  Icons.lock_outline_rounded,
-                ),
-                validator: (v) => (v == null || v.length < _minLength)
-                    ? 'Minimal $_minLength karakter.'
-                    : null,
-              ),
-              const SizedBox(height: 12),
-              TextFormField(
-                controller: _confirmController,
-                obscureText: true,
-                style: GoogleFonts.poppins(fontSize: 13.5),
-                decoration: _fieldDecoration(
-                  'Konfirmasi Kata Sandi Baru',
-                  Icons.lock_outline_rounded,
-                ),
-                validator: (v) => v != _newController.text
-                    ? 'Konfirmasi kata sandi tidak cocok.'
-                    : null,
-              ),
-            ],
-          ),
-        ),
-      ),
-      actions: _dialogActions(context, _save),
+      actions: dialogActions(context, _save),
     );
   }
 }

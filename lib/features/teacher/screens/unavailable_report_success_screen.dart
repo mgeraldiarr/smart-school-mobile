@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class InformasiBerhasilPage extends StatelessWidget {
+class UnavailableReportSuccessScreen extends StatelessWidget {
   final String subjectName;
   final String className;
 
-  const InformasiBerhasilPage({
+  const UnavailableReportSuccessScreen({
     super.key,
     required this.subjectName,
     required this.className,

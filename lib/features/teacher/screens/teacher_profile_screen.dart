@@ -4,13 +4,14 @@ import 'package:provider/provider.dart';
 
 import '../../../core/constants/app_colors.dart';
 import '../../../core/services/profile_photo_controller.dart';
+import '../../../core/utils/name_utils.dart';
+import '../../../core/widgets/change_password_dialog.dart';
 import '../../../core/widgets/logout_confirm_dialog.dart';
 import '../../../core/widgets/profile_avatar.dart';
 import '../../../core/widgets/profile_photo_picker.dart';
 import '../../auth/providers/auth_provider.dart';
 import '../../auth/screens/login_screen.dart';
 import '../providers/teacher_provider.dart';
-import '../teacher_name.dart';
 
 class TeacherProfileScreen extends StatefulWidget {
   const TeacherProfileScreen({super.key});
@@ -194,137 +195,18 @@ class _TeacherProfileScreenState extends State<TeacherProfileScreen> {
     );
   }
 
-  void _showChangePasswordDialog() {
-    final oldPassController = TextEditingController();
-    final newPassController = TextEditingController();
-    final confirmPassController = TextEditingController();
+  Future<void> _showChangePasswordDialog() async {
+    final changed = await showChangePasswordDialog(context);
+    if (!changed || !mounted) return;
 
-    showDialog(
-      context: context,
-      builder: (ctx) {
-        return AlertDialog(
-          backgroundColor: AppColors.surface,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
-          title: Text(
-            'Ubah Kata Sandi',
-            style: GoogleFonts.poppins(
-              fontSize: 17,
-              fontWeight: FontWeight.w700,
-              color: AppColors.textDark,
-            ),
-          ),
-          content: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextField(
-                  controller: oldPassController,
-                  obscureText: true,
-                  style: GoogleFonts.poppins(fontSize: 13.5),
-                  decoration: InputDecoration(
-                    labelText: 'Kata Sandi Lama',
-                    labelStyle: GoogleFonts.poppins(fontSize: 12.5),
-                    prefixIcon: const Icon(Icons.lock_outline_rounded),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 12),
-                TextField(
-                  controller: newPassController,
-                  obscureText: true,
-                  style: GoogleFonts.poppins(fontSize: 13.5),
-                  decoration: InputDecoration(
-                    labelText: 'Kata Sandi Baru (Min. 8 Karakter)',
-                    labelStyle: GoogleFonts.poppins(fontSize: 12.5),
-                    prefixIcon: const Icon(Icons.lock_outline_rounded),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 12),
-                TextField(
-                  controller: confirmPassController,
-                  obscureText: true,
-                  style: GoogleFonts.poppins(fontSize: 13.5),
-                  decoration: InputDecoration(
-                    labelText: 'Konfirmasi Kata Sandi Baru',
-                    labelStyle: GoogleFonts.poppins(fontSize: 12.5),
-                    prefixIcon: const Icon(Icons.lock_outline_rounded),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(ctx).pop(),
-              child: Text(
-                'Batal',
-                style: GoogleFonts.poppins(color: AppColors.textMuted),
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                if (newPassController.text.length < 8) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        'Kata sandi baru minimal 8 karakter.',
-                        style: GoogleFonts.poppins(),
-                      ),
-                      backgroundColor: AppColors.dangerRed,
-                    ),
-                  );
-                  return;
-                }
-                if (newPassController.text != confirmPassController.text) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        'Konfirmasi kata sandi tidak cocok.',
-                        style: GoogleFonts.poppins(),
-                      ),
-                      backgroundColor: AppColors.dangerRed,
-                    ),
-                  );
-                  return;
-                }
-                Navigator.of(ctx).pop();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(
-                      'Kata sandi berhasil diperbarui.',
-                      style: GoogleFonts.poppins(fontWeight: FontWeight.w500),
-                    ),
-                    backgroundColor: AppColors.successGreen,
-                  ),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.brandBlue,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              child: Text(
-                'Simpan',
-                style: GoogleFonts.poppins(
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          ],
-        );
-      },
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          'Kata sandi berhasil diperbarui.',
+          style: GoogleFonts.poppins(fontWeight: FontWeight.w500),
+        ),
+        backgroundColor: AppColors.successGreen,
+      ),
     );
   }
 
@@ -432,7 +314,7 @@ class _TeacherProfileScreenState extends State<TeacherProfileScreen> {
             listenable: photo,
             builder: (context, _) => ProfileAvatar(
               size: 94,
-              initials: teacherInitials(fullName),
+              initials: nameInitials(fullName, fallback: 'G'),
               localPath: photo.localPath,
               // TODO(api): isi dengan URL foto guru dari backend bila tersedia.
               photoUrl: null,

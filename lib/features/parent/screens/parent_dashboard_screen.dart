@@ -1,13 +1,13 @@
-
 import 'package:flutter/material.dart';
-import '../constants/app_colors.dart';
 
-class DashboardWaliMurid extends StatelessWidget {
+import '../../../core/constants/app_colors.dart';
+
+class ParentDashboardScreen extends StatelessWidget {
   final VoidCallback? onOpenAttendance;
   final VoidCallback? onOpenSchedule;
   final VoidCallback? onOpenNotifications;
 
-  const DashboardWaliMurid({
+  const ParentDashboardScreen({
     super.key,
     this.onOpenAttendance,
     this.onOpenSchedule,
@@ -19,12 +19,8 @@ class DashboardWaliMurid extends StatelessWidget {
     return CustomScrollView(
       physics: const BouncingScrollPhysics(),
       slivers: [
-        SliverToBoxAdapter(
-          child: _header(),
-        ),
-        SliverToBoxAdapter(
-          child: _studentCard(),
-        ),
+        SliverToBoxAdapter(child: _header()),
+        SliverToBoxAdapter(child: _studentCard()),
         SliverToBoxAdapter(
           child: Padding(
             padding: const EdgeInsets.fromLTRB(18, 18, 18, 20),
@@ -36,16 +32,13 @@ class DashboardWaliMurid extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 21,
                     fontWeight: FontWeight.w800,
-                    color: textDark,
+                    color: AppColors.slateText,
                   ),
                 ),
                 const SizedBox(height: 5),
                 const Text(
                   'Semester Ganjil 2026/2027',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: textMuted,
-                  ),
+                  style: TextStyle(fontSize: 14, color: AppColors.slateMuted),
                 ),
                 const SizedBox(height: 14),
                 Row(
@@ -57,8 +50,8 @@ class DashboardWaliMurid extends StatelessWidget {
                         label: 'Rekap Kehadiran',
                         detail: '40 dari 44 pertemuan',
                         colors: const [
-                          primaryBlue,
-                          brightBlue,
+                          AppColors.accentBlue,
+                          AppColors.accentBlueBright,
                         ],
                       ),
                     ),
@@ -69,10 +62,7 @@ class DashboardWaliMurid extends StatelessWidget {
                         value: '87,3',
                         label: 'Rata-rata Nilai',
                         detail: 'Predikat A • Sangat Baik',
-                        colors: const [
-                          Color(0xFF159675),
-                          Color(0xFF27B989),
-                        ],
+                        colors: const [Color(0xFF159675), Color(0xFF27B989)],
                       ),
                     ),
                   ],
@@ -86,7 +76,7 @@ class DashboardWaliMurid extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 19,
                           fontWeight: FontWeight.w800,
-                          color: textDark,
+                          color: AppColors.slateText,
                         ),
                       ),
                     ),
@@ -97,7 +87,7 @@ class DashboardWaliMurid extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 13,
                           fontWeight: FontWeight.w700,
-                          color: primaryBlue,
+                          color: AppColors.accentBlue,
                         ),
                       ),
                     ),
@@ -106,10 +96,7 @@ class DashboardWaliMurid extends StatelessWidget {
                 const SizedBox(height: 5),
                 const Text(
                   'Dimulai dalam 30 menit',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: textMuted,
-                  ),
+                  style: TextStyle(fontSize: 14, color: AppColors.slateMuted),
                 ),
                 const SizedBox(height: 18),
                 _nextLesson(),
@@ -122,7 +109,7 @@ class DashboardWaliMurid extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w800,
-                          color: textDark,
+                          color: AppColors.slateText,
                         ),
                       ),
                     ),
@@ -131,7 +118,7 @@ class DashboardWaliMurid extends StatelessWidget {
                       child: const Text(
                         'Lihat semua',
                         style: TextStyle(
-                          color: primaryBlue,
+                          color: AppColors.accentBlue,
                           fontWeight: FontWeight.w700,
                           fontSize: 13,
                         ),
@@ -142,10 +129,7 @@ class DashboardWaliMurid extends StatelessWidget {
                 const SizedBox(height: 5),
                 const Text(
                   'Hari ini',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: textMuted,
-                  ),
+                  style: TextStyle(fontSize: 14, color: AppColors.slateMuted),
                 ),
                 const SizedBox(height: 17),
                 _recentAttendance(),
@@ -165,10 +149,7 @@ class DashboardWaliMurid extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [
-            Color(0xFF1767BE),
-            Color(0xFF258FE5),
-          ],
+          colors: [Color(0xFF1767BE), Color(0xFF258FE5)],
         ),
         borderRadius: BorderRadius.only(
           bottomLeft: Radius.circular(40),
@@ -218,10 +199,7 @@ class DashboardWaliMurid extends StatelessWidget {
           const SizedBox(height: 9),
           const Text(
             'Pantau perkembangan belajar buah hati Anda.',
-            style: TextStyle(
-              color: Color(0xFFE4F0FF),
-              fontSize: 14,
-            ),
+            style: TextStyle(color: Color(0xFFE4F0FF), fontSize: 14),
           ),
         ],
       ),
@@ -233,20 +211,16 @@ class DashboardWaliMurid extends StatelessWidget {
       width: 44,
       height: 44,
       decoration: BoxDecoration(
-        color: isLogo
-            ? Colors.white
-            : Colors.white.withValues(alpha: 0.17),
+        color: isLogo ? Colors.white : Colors.white.withValues(alpha: 0.17),
         borderRadius: BorderRadius.circular(17),
         border: isLogo
             ? null
-            : Border.all(
-                color: Colors.white.withValues(alpha: 0.3),
-              ),
+            : Border.all(color: Colors.white.withValues(alpha: 0.3)),
       ),
       child: Icon(
         icon,
         size: 29,
-        color: isLogo ? primaryBlue : Colors.white,
+        color: isLogo ? AppColors.accentBlue : Colors.white,
       ),
     );
   }
@@ -260,11 +234,10 @@ class DashboardWaliMurid extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(25),
-          border: Border.all(color: borderColor),
+          border: Border.all(color: AppColors.softBorder),
           boxShadow: [
             BoxShadow(
-              color: const Color(0xFF416A9B)
-                  .withValues(alpha: 0.08),
+              color: const Color(0xFF416A9B).withValues(alpha: 0.08),
               blurRadius: 25,
               offset: const Offset(0, 9),
             ),
@@ -281,7 +254,7 @@ class DashboardWaliMurid extends StatelessWidget {
               ),
               child: const Icon(
                 Icons.person_rounded,
-                color: primaryBlue,
+                color: AppColors.accentBlue,
                 size: 40,
               ),
             ),
@@ -293,7 +266,7 @@ class DashboardWaliMurid extends StatelessWidget {
                   Text(
                     'PUTRA ANDA',
                     style: TextStyle(
-                      color: primaryBlue,
+                      color: AppColors.accentBlue,
                       fontSize: 12,
                       fontWeight: FontWeight.w800,
                       letterSpacing: 1.2,
@@ -305,16 +278,13 @@ class DashboardWaliMurid extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 17,
                       fontWeight: FontWeight.w800,
-                      color: textDark,
+                      color: AppColors.slateText,
                     ),
                   ),
                   SizedBox(height: 6),
                   Text(
                     'Kelas 8A • NIS 20260001',
-                    style: TextStyle(
-                      fontSize: 11,
-                      color: textMuted,
-                    ),
+                    style: TextStyle(fontSize: 11, color: AppColors.slateMuted),
                   ),
                 ],
               ),
@@ -402,14 +372,11 @@ class DashboardWaliMurid extends StatelessWidget {
 
   Widget _nextLesson() {
     return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 15,
-        vertical: 18,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 18),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(23),
-        border: Border.all(color: borderColor, width: 1.3),
+        border: Border.all(color: AppColors.softBorder, width: 1.3),
       ),
       child: Row(
         children: [
@@ -418,7 +385,7 @@ class DashboardWaliMurid extends StatelessWidget {
             child: Text(
               '10.15',
               style: TextStyle(
-                color: primaryBlue,
+                color: AppColors.accentBlue,
                 fontSize: 11,
                 fontWeight: FontWeight.w800,
               ),
@@ -442,27 +409,21 @@ class DashboardWaliMurid extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w800,
-                    color: textDark,
+                    color: AppColors.slateText,
                   ),
                 ),
                 SizedBox(height: 6),
                 Text(
                   'Pak Budi • Ruang 8A • 10.15 – 11.45',
                   maxLines: 2,
-                  style: TextStyle(
-                    fontSize: 9,
-                    color: textMuted,
-                  ),
+                  style: TextStyle(fontSize: 9, color: AppColors.slateMuted),
                 ),
               ],
             ),
           ),
           const SizedBox(width: 8),
           Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 12,
-              vertical: 10,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
             decoration: BoxDecoration(
               color: const Color(0xFFFFF0DC),
               borderRadius: BorderRadius.circular(24),
@@ -487,7 +448,7 @@ class DashboardWaliMurid extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(23),
-        border: Border.all(color: borderColor, width: 1.3),
+        border: Border.all(color: AppColors.softBorder, width: 1.3),
       ),
       child: Row(
         children: [
@@ -495,7 +456,7 @@ class DashboardWaliMurid extends StatelessWidget {
             width: 53,
             height: 57,
             decoration: BoxDecoration(
-              color: primaryBlue,
+              color: AppColors.accentBlue,
               borderRadius: BorderRadius.circular(16),
             ),
             child: const Icon(
@@ -512,7 +473,7 @@ class DashboardWaliMurid extends StatelessWidget {
                 Text(
                   'Matematika',
                   style: TextStyle(
-                    color: textDark,
+                    color: AppColors.slateText,
                     fontSize: 14,
                     fontWeight: FontWeight.w800,
                   ),
@@ -520,10 +481,7 @@ class DashboardWaliMurid extends StatelessWidget {
                 SizedBox(height: 6),
                 Text(
                   'Pak Ahmad • 07.15 WIB',
-                  style: TextStyle(
-                    fontSize: 11,
-                    color: textMuted,
-                  ),
+                  style: TextStyle(fontSize: 11, color: AppColors.slateMuted),
                 ),
               ],
             ),
@@ -536,10 +494,7 @@ class DashboardWaliMurid extends StatelessWidget {
 
   Widget _statusChip(String label) {
     return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 13,
-        vertical: 9,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 9),
       decoration: BoxDecoration(
         color: const Color(0xFFE2F7ED),
         borderRadius: BorderRadius.circular(30),

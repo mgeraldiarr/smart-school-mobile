@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 
-import '../constants/app_colors.dart';
+import '../../../core/constants/app_colors.dart';
 
-class JadwalPelajaranWaliMurid extends StatefulWidget {
-  const JadwalPelajaranWaliMurid({super.key});
+class ParentScheduleScreen extends StatefulWidget {
+  const ParentScheduleScreen({super.key});
 
   @override
-  State<JadwalPelajaranWaliMurid> createState() =>
-      _JadwalPelajaranWaliMuridState();
+  State<ParentScheduleScreen> createState() => _ParentScheduleScreenState();
 }
 
-class _JadwalPelajaranWaliMuridState extends State<JadwalPelajaranWaliMurid> {
+class _ParentScheduleScreenState extends State<ParentScheduleScreen> {
   int _selectedDay = 0;
 
   final List<Map<String, String>> _days = [
@@ -34,7 +33,7 @@ class _JadwalPelajaranWaliMuridState extends State<JadwalPelajaranWaliMurid> {
       'subject': 'IPA',
       'teacher': 'Bu Siti',
       'status': 'Mengajar',
-      'color': 'green',
+      'color': 'AppColors.emerald',
     },
     {
       'time': '10.15 - 11.45',
@@ -54,14 +53,14 @@ class _JadwalPelajaranWaliMuridState extends State<JadwalPelajaranWaliMurid> {
 
   Color _subjectColor(String color) {
     switch (color) {
-      case 'green':
+      case 'AppColors.emerald':
         return const Color(0xFF20A579);
       case 'orange':
         return const Color(0xFFF2932B);
       case 'purple':
         return const Color(0xFF8061D1);
       default:
-        return primaryBlue;
+        return AppColors.accentBlue;
     }
   }
 
@@ -81,7 +80,7 @@ class _JadwalPelajaranWaliMuridState extends State<JadwalPelajaranWaliMurid> {
       case 'Berhalangan':
         return const Color(0xFFC76B00);
       case 'Terjadwal':
-        return primaryBlue;
+        return AppColors.accentBlue;
       default:
         return const Color(0xFF078553);
     }
@@ -90,7 +89,7 @@ class _JadwalPelajaranWaliMuridState extends State<JadwalPelajaranWaliMurid> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: pageBackground,
+      backgroundColor: AppColors.pageBackground,
       body: SafeArea(
         child: Column(
           children: [
@@ -123,7 +122,9 @@ class _JadwalPelajaranWaliMuridState extends State<JadwalPelajaranWaliMurid> {
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border(
-          bottom: BorderSide(color: borderColor.withValues(alpha: 0.7)),
+          bottom: BorderSide(
+            color: AppColors.softBorder.withValues(alpha: 0.7),
+          ),
         ),
       ),
       child: const Column(
@@ -132,7 +133,7 @@ class _JadwalPelajaranWaliMuridState extends State<JadwalPelajaranWaliMurid> {
           Text(
             'Jadwal Pelajaran',
             style: TextStyle(
-              color: textDark,
+              color: AppColors.slateText,
               fontSize: 24,
               fontWeight: FontWeight.w800,
             ),
@@ -140,7 +141,7 @@ class _JadwalPelajaranWaliMuridState extends State<JadwalPelajaranWaliMurid> {
           SizedBox(height: 8),
           Text(
             'Kelas 8A • Oktober 2026',
-            style: TextStyle(color: textMuted, fontSize: 14),
+            style: TextStyle(color: AppColors.slateMuted, fontSize: 14),
           ),
         ],
       ),
@@ -166,16 +167,18 @@ class _JadwalPelajaranWaliMuridState extends State<JadwalPelajaranWaliMurid> {
                 duration: const Duration(milliseconds: 180),
                 height: 70,
                 decoration: BoxDecoration(
-                  color: selected ? primaryBlue : Colors.white,
+                  color: selected ? AppColors.accentBlue : Colors.white,
                   borderRadius: BorderRadius.circular(17),
                   border: Border.all(
-                    color: selected ? primaryBlue : borderColor,
+                    color: selected
+                        ? AppColors.accentBlue
+                        : AppColors.softBorder,
                     width: 1.5,
                   ),
                   boxShadow: selected
                       ? [
                           BoxShadow(
-                            color: primaryBlue.withValues(alpha: 0.18),
+                            color: AppColors.accentBlue.withValues(alpha: 0.18),
                             blurRadius: 18,
                             offset: const Offset(0, 8),
                           ),
@@ -188,7 +191,7 @@ class _JadwalPelajaranWaliMuridState extends State<JadwalPelajaranWaliMurid> {
                     Text(
                       day['day']!,
                       style: TextStyle(
-                        color: selected ? Colors.white : textMuted,
+                        color: selected ? Colors.white : AppColors.slateMuted,
                         fontSize: 13,
                       ),
                     ),
@@ -196,7 +199,7 @@ class _JadwalPelajaranWaliMuridState extends State<JadwalPelajaranWaliMurid> {
                     Text(
                       day['date']!,
                       style: TextStyle(
-                        color: selected ? Colors.white : textMuted,
+                        color: selected ? Colors.white : AppColors.slateMuted,
                         fontSize: 18,
                         fontWeight: FontWeight.w800,
                       ),
@@ -223,7 +226,7 @@ class _JadwalPelajaranWaliMuridState extends State<JadwalPelajaranWaliMurid> {
             padding: const EdgeInsets.only(top: 26),
             child: Text(
               item['time']!,
-              style: const TextStyle(color: textMuted, fontSize: 12),
+              style: const TextStyle(color: AppColors.slateMuted, fontSize: 12),
             ),
           ),
         ),
@@ -234,7 +237,7 @@ class _JadwalPelajaranWaliMuridState extends State<JadwalPelajaranWaliMurid> {
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(23),
-              border: Border.all(color: borderColor, width: 1.5),
+              border: Border.all(color: AppColors.softBorder, width: 1.5),
             ),
             child: Row(
               children: [
@@ -255,7 +258,7 @@ class _JadwalPelajaranWaliMuridState extends State<JadwalPelajaranWaliMurid> {
                       Text(
                         item['subject']!,
                         style: const TextStyle(
-                          color: textDark,
+                          color: AppColors.slateText,
                           fontSize: 12,
                           fontWeight: FontWeight.w800,
                         ),
@@ -263,7 +266,10 @@ class _JadwalPelajaranWaliMuridState extends State<JadwalPelajaranWaliMurid> {
                       const SizedBox(height: 6),
                       Text(
                         item['teacher']!,
-                        style: const TextStyle(color: textMuted, fontSize: 10),
+                        style: const TextStyle(
+                          color: AppColors.slateMuted,
+                          fontSize: 10,
+                        ),
                       ),
                     ],
                   ),

@@ -6,10 +6,8 @@ import '../../../core/constants/app_colors.dart';
 import '../models/student_grade.dart';
 
 // Warna khusus halaman ini (tint biru dari desain).
-const _pageBackground = Color(0xFFF4F8FF);
 const _cardBorder = Color(0xFFD3E3F6);
 const _tintBlue = Color(0xFFEAF3FE);
-const _scoreBlue = Color(0xFF1768C5);
 
 /// Halaman input/ubah nilai UTS & UAS satu siswa.
 ///
@@ -89,7 +87,7 @@ class _InputGradeScreenState extends State<InputGradeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: _pageBackground,
+      backgroundColor: AppColors.pageBackground,
       body: SafeArea(
         child: Column(
           children: [
@@ -171,7 +169,7 @@ class _Header extends StatelessWidget {
                 height: 40,
                 child: Icon(
                   Icons.chevron_left_rounded,
-                  color: _scoreBlue,
+                  color: AppColors.accentBlue,
                   size: 26,
                 ),
               ),
@@ -237,7 +235,7 @@ class _StudentCard extends StatelessWidget {
               style: GoogleFonts.poppins(
                 fontSize: 13,
                 fontWeight: FontWeight.w700,
-                color: _scoreBlue,
+                color: AppColors.accentBlue,
               ),
             ),
           ),
@@ -382,7 +380,7 @@ class _ScoreField extends StatelessWidget {
             style: GoogleFonts.poppins(
               fontSize: 30,
               fontWeight: FontWeight.w700,
-              color: isValid ? _scoreBlue : AppColors.dangerRed,
+              color: isValid ? AppColors.accentBlue : AppColors.dangerRed,
             ),
             decoration: const InputDecoration(
               isDense: true,
@@ -437,7 +435,11 @@ class _AverageBanner extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Icon(Icons.info_outline_rounded, color: _scoreBlue, size: 22),
+          const Icon(
+            Icons.info_outline_rounded,
+            color: AppColors.accentBlue,
+            size: 22,
+          ),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
@@ -448,13 +450,16 @@ class _AverageBanner extends StatelessWidget {
                   style: GoogleFonts.poppins(
                     fontSize: 12.5,
                     fontWeight: FontWeight.w700,
-                    color: _scoreBlue,
+                    color: AppColors.accentBlue,
                   ),
                 ),
                 const SizedBox(height: 2),
                 Text(
                   subtitle,
-                  style: GoogleFonts.poppins(fontSize: 11, color: _scoreBlue),
+                  style: GoogleFonts.poppins(
+                    fontSize: 11,
+                    color: AppColors.accentBlue,
+                  ),
                 ),
               ],
             ),
@@ -492,7 +497,7 @@ class _SaveButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: _scoreBlue.withValues(alpha: 0.28),
+              color: AppColors.accentBlue.withValues(alpha: 0.28),
               blurRadius: 16,
               offset: const Offset(0, 8),
             ),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../core/constants/app_colors.dart';
-import '../../informasi_berhasil.dart';
+import 'unavailable_report_success_screen.dart';
 import '../models/teacher_schedule.dart';
 
 class TeacherUnavailableScreen extends StatefulWidget {
@@ -81,7 +81,7 @@ class _TeacherUnavailableScreenState extends State<TeacherUnavailableScreen> {
 
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
-        builder: (_) => InformasiBerhasilPage(
+        builder: (_) => UnavailableReportSuccessScreen(
           subjectName: widget.schedule.subjectName,
           className: _cleanClassName,
         ),
@@ -366,10 +366,7 @@ class _TeacherUnavailableScreenState extends State<TeacherUnavailableScreen> {
         controller: _noteController,
         minLines: 4,
         maxLines: 5,
-        style: GoogleFonts.poppins(
-          fontSize: 13.5,
-          color: AppColors.textDark,
-        ),
+        style: GoogleFonts.poppins(fontSize: 13.5, color: AppColors.textDark),
         decoration: InputDecoration(
           hintText: 'Tuliskan keterangan alasan tidak dapat mengajar...',
           hintStyle: GoogleFonts.poppins(

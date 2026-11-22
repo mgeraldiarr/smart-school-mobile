@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-import 'pemindai_wajah.dart';
-import 'absensi_berhasil.dart';
-import 'teacher/models/teacher_schedule.dart';
+import 'face_scan_screen.dart';
+import 'attendance_success_screen.dart';
+import '../../teacher/models/teacher_schedule.dart';
 
 // CLASS HALAMAN VERIFIKASI KEHADIRAN
-class VerifikasiKehadiranPage extends StatelessWidget {
+class AttendanceVerificationScreen extends StatelessWidget {
   final TeacherSchedule schedule;
   final int detectedFaceCount;
 
-  const VerifikasiKehadiranPage({
+  const AttendanceVerificationScreen({
     super.key,
     required this.schedule,
     this.detectedFaceCount = 0,
@@ -263,7 +263,7 @@ class VerifikasiKehadiranPage extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                                  AbsensiBerhasilPage(schedule: schedule),
+                                  AttendanceSuccessScreen(schedule: schedule),
                             ),
                           );
                         },
@@ -303,7 +303,7 @@ class VerifikasiKehadiranPage extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                                  PemindaiWajahPage(schedule: schedule),
+                                  FaceScanScreen(schedule: schedule),
                             ),
                           );
                         },
