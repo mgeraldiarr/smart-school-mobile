@@ -1,34 +1,41 @@
 import 'package:flutter/material.dart';
 
-// Model Data Siswa Daftar Kehadiran
-class AttendanceStudent {
-  final int id;
-  final String name;
-  final String nis;
-  String status; // 'Hadir', 'Tidak Hadir', 'Belum Absen'
+import '../models/attendance_record.dart';
 
-  AttendanceStudent({
-    required this.id,
-    required this.name,
-    required this.nis,
-    required this.status,
-  });
-}
-
-class DaftarKehadiranPage extends StatefulWidget {
-  const DaftarKehadiranPage({super.key});
+class AttendanceListScreen extends StatefulWidget {
+  const AttendanceListScreen({super.key});
 
   @override
-  State<DaftarKehadiranPage> createState() => _DaftarKehadiranPageState();
+  State<AttendanceListScreen> createState() => _AttendanceListScreenState();
 }
 
-class _DaftarKehadiranPageState extends State<DaftarKehadiranPage> {
+class _AttendanceListScreenState extends State<AttendanceListScreen> {
   // Data Dummy sesuai gambar
-  final List<AttendanceStudent> _students = [
-    AttendanceStudent(id: 1, name: "Ahmad Rizki", nis: "20260001", status: "Hadir"),
-    AttendanceStudent(id: 2, name: "Budi Santoso", nis: "20260002", status: "Hadir"),
-    AttendanceStudent(id: 3, name: "Dinda Putri", nis: "20260003", status: "Belum Absen"),
-    AttendanceStudent(id: 4, name: "Rizki Fajar", nis: "20260004", status: "Tidak Hadir"),
+  final List<AttendanceRecord> _students = [
+    AttendanceRecord(
+      id: 1,
+      name: "Ahmad Rizki",
+      nis: "20260001",
+      status: "Hadir",
+    ),
+    AttendanceRecord(
+      id: 2,
+      name: "Budi Santoso",
+      nis: "20260002",
+      status: "Hadir",
+    ),
+    AttendanceRecord(
+      id: 3,
+      name: "Dinda Putri",
+      nis: "20260003",
+      status: "Belum Absen",
+    ),
+    AttendanceRecord(
+      id: 4,
+      name: "Rizki Fajar",
+      nis: "20260004",
+      status: "Tidak Hadir",
+    ),
   ];
 
   String _searchQuery = "";
@@ -65,8 +72,12 @@ class _DaftarKehadiranPageState extends State<DaftarKehadiranPage> {
   Widget build(BuildContext context) {
     // Hitung Statistik Otomatis
     int totalHadir = _students.where((s) => s.status == "Hadir").length;
-    int totalTidakHadir = _students.where((s) => s.status == "Tidak Hadir").length;
-    int totalBelumAbsen = _students.where((s) => s.status == "Belum Absen").length;
+    int totalTidakHadir = _students
+        .where((s) => s.status == "Tidak Hadir")
+        .length;
+    int totalBelumAbsen = _students
+        .where((s) => s.status == "Belum Absen")
+        .length;
 
     // Filter & Urutkan Data Siswa
     var filteredStudents = _students.where((student) {
@@ -91,7 +102,11 @@ class _DaftarKehadiranPageState extends State<DaftarKehadiranPage> {
               borderRadius: BorderRadius.circular(12),
             ),
             child: IconButton(
-              icon: const Icon(Icons.arrow_back_ios_new, color: Color(0xFF1E88E5), size: 18),
+              icon: const Icon(
+                Icons.arrow_back_ios_new,
+                color: Color(0xFF1E88E5),
+                size: 18,
+              ),
               onPressed: () => Navigator.of(context).maybePop(),
             ),
           ),
@@ -101,7 +116,11 @@ class _DaftarKehadiranPageState extends State<DaftarKehadiranPage> {
           children: const [
             Text(
               "Daftar Kehadiran",
-              style: TextStyle(color: Color(0xFF1E293B), fontWeight: FontWeight.bold, fontSize: 18),
+              style: TextStyle(
+                color: Color(0xFF1E293B),
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ),
             ),
             SizedBox(height: 2),
             Text(
@@ -119,7 +138,11 @@ class _DaftarKehadiranPageState extends State<DaftarKehadiranPage> {
                 borderRadius: BorderRadius.circular(12),
               ),
               child: IconButton(
-                icon: const Icon(Icons.notifications_none_rounded, color: Color(0xFF1E88E5), size: 20),
+                icon: const Icon(
+                  Icons.notifications_none_rounded,
+                  color: Color(0xFF1E88E5),
+                  size: 20,
+                ),
                 onPressed: () {},
               ),
             ),
@@ -131,7 +154,10 @@ class _DaftarKehadiranPageState extends State<DaftarKehadiranPage> {
           children: [
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16.0,
+                  vertical: 8.0,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -148,18 +174,30 @@ class _DaftarKehadiranPageState extends State<DaftarKehadiranPage> {
                         children: [
                           Row(
                             children: [
-                              const Icon(Icons.access_time_rounded, color: Colors.white, size: 20),
+                              const Icon(
+                                Icons.access_time_rounded,
+                                color: Colors.white,
+                                size: 20,
+                              ),
                               const SizedBox(width: 8),
                               const Text(
                                 "07.00 - 08.30",
-                                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
                               ),
                             ],
                           ),
                           const SizedBox(height: 8),
                           const Text(
                             "Senin, 5 Oktober 2026",
-                            style: TextStyle(color: Colors.white70, fontSize: 12, fontWeight: FontWeight.w500),
+                            style: TextStyle(
+                              color: Colors.white70,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
                         ],
                       ),
@@ -169,11 +207,29 @@ class _DaftarKehadiranPageState extends State<DaftarKehadiranPage> {
                     // 3 Kotak Statistik (Hadir, Tidak Hadir, Belum Absen)
                     Row(
                       children: [
-                        Expanded(child: _buildStatCard(totalHadir.toString(), "Hadir", const Color(0xFF1E88E5))), // Bisa pakai variabel totalHadir
+                        Expanded(
+                          child: _buildStatCard(
+                            totalHadir.toString(),
+                            "Hadir",
+                            const Color(0xFF1E88E5),
+                          ),
+                        ), // Bisa pakai variabel totalHadir
                         const SizedBox(width: 10),
-                        Expanded(child: _buildStatCard(totalTidakHadir.toString(), "Tidak Hadir", Colors.black87)),
+                        Expanded(
+                          child: _buildStatCard(
+                            totalTidakHadir.toString(),
+                            "Tidak Hadir",
+                            Colors.black87,
+                          ),
+                        ),
                         const SizedBox(width: 10),
-                        Expanded(child: _buildStatCard(totalBelumAbsen.toString(), "Belum Absen", Colors.black87)),
+                        Expanded(
+                          child: _buildStatCard(
+                            totalBelumAbsen.toString(),
+                            "Belum Absen",
+                            Colors.black87,
+                          ),
+                        ),
                       ],
                     ),
                     const SizedBox(height: 16),
@@ -186,10 +242,14 @@ class _DaftarKehadiranPageState extends State<DaftarKehadiranPage> {
                         border: Border.all(color: Colors.grey.shade200),
                       ),
                       child: TextField(
-                        onChanged: (value) => setState(() => _searchQuery = value),
+                        onChanged: (value) =>
+                            setState(() => _searchQuery = value),
                         decoration: const InputDecoration(
                           hintText: "Cari nama atau NIS siswa",
-                          hintStyle: TextStyle(color: Colors.grey, fontSize: 13),
+                          hintStyle: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 13,
+                          ),
                           prefixIcon: Icon(Icons.search, color: Colors.grey),
                           border: InputBorder.none,
                           contentPadding: EdgeInsets.symmetric(vertical: 12),
@@ -204,7 +264,11 @@ class _DaftarKehadiranPageState extends State<DaftarKehadiranPage> {
                       children: [
                         Text(
                           "${_students.length} Siswa",
-                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Color(0xFF1E293B)),
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                            color: Color(0xFF1E293B),
+                          ),
                         ),
                         GestureDetector(
                           onTap: () {
@@ -216,10 +280,18 @@ class _DaftarKehadiranPageState extends State<DaftarKehadiranPage> {
                             children: const [
                               Text(
                                 "Urutkan",
-                                style: TextStyle(fontSize: 12, color: Color(0xFF1E88E5), fontWeight: FontWeight.bold),
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color(0xFF1E88E5),
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                               SizedBox(width: 2),
-                              Icon(Icons.swap_vert, size: 16, color: Color(0xFF1E88E5)),
+                              Icon(
+                                Icons.swap_vert,
+                                size: 16,
+                                color: Color(0xFF1E88E5),
+                              ),
                             ],
                           ),
                         ),
@@ -238,18 +310,30 @@ class _DaftarKehadiranPageState extends State<DaftarKehadiranPage> {
                           ? const Padding(
                               padding: EdgeInsets.all(24.0),
                               child: Center(
-                                child: Text("Siswa tidak ditemukan", style: TextStyle(color: Colors.grey, fontSize: 13)),
+                                child: Text(
+                                  "Siswa tidak ditemukan",
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 13,
+                                  ),
+                                ),
                               ),
                             )
                           : ListView.separated(
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
                               itemCount: filteredStudents.length,
-                              separatorBuilder: (context, index) => Divider(height: 1, color: Colors.grey.shade200),
+                              separatorBuilder: (context, index) => Divider(
+                                height: 1,
+                                color: Colors.grey.shade200,
+                              ),
                               itemBuilder: (context, index) {
                                 final student = filteredStudents[index];
                                 return Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                    vertical: 12,
+                                  ),
                                   child: Row(
                                     children: [
                                       // Nomor Urut / ID Badge
@@ -258,12 +342,17 @@ class _DaftarKehadiranPageState extends State<DaftarKehadiranPage> {
                                         height: 36,
                                         decoration: BoxDecoration(
                                           color: const Color(0xFFEBF3FA),
-                                          borderRadius: BorderRadius.circular(8),
+                                          borderRadius: BorderRadius.circular(
+                                            8,
+                                          ),
                                         ),
                                         alignment: Alignment.center,
                                         child: Text(
                                           "${student.id}",
-                                          style: const TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF1565C0)),
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Color(0xFF1565C0),
+                                          ),
                                         ),
                                       ),
                                       const SizedBox(width: 12),
@@ -271,16 +360,24 @@ class _DaftarKehadiranPageState extends State<DaftarKehadiranPage> {
                                       // Nama & NIS Siswa
                                       Expanded(
                                         child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               student.name,
-                                              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: Color(0xFF1E293B)),
+                                              style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 13,
+                                                color: Color(0xFF1E293B),
+                                              ),
                                             ),
                                             const SizedBox(height: 2),
                                             Text(
                                               "NIS ${student.nis}",
-                                              style: const TextStyle(fontSize: 11, color: Colors.grey),
+                                              style: const TextStyle(
+                                                fontSize: 11,
+                                                color: Colors.grey,
+                                              ),
                                             ),
                                           ],
                                         ),
@@ -288,17 +385,26 @@ class _DaftarKehadiranPageState extends State<DaftarKehadiranPage> {
 
                                       // Badge Status Kehadiran
                                       Container(
-                                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 12,
+                                          vertical: 6,
+                                        ),
                                         decoration: BoxDecoration(
-                                          color: _getStatusBgColor(student.status),
-                                          borderRadius: BorderRadius.circular(12),
+                                          color: _getStatusBgColor(
+                                            student.status,
+                                          ),
+                                          borderRadius: BorderRadius.circular(
+                                            12,
+                                          ),
                                         ),
                                         child: Text(
                                           student.status,
                                           style: TextStyle(
                                             fontSize: 12,
                                             fontWeight: FontWeight.bold,
-                                            color: _getStatusTextColor(student.status),
+                                            color: _getStatusTextColor(
+                                              student.status,
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -331,7 +437,9 @@ class _DaftarKehadiranPageState extends State<DaftarKehadiranPage> {
                 child: ElevatedButton(
                   onPressed: () {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("Absensi selesai disimpan!")),
+                      const SnackBar(
+                        content: Text("Absensi selesai disimpan!"),
+                      ),
                     );
                     Navigator.of(context).popUntil((route) => route.isFirst);
                   },
@@ -345,7 +453,11 @@ class _DaftarKehadiranPageState extends State<DaftarKehadiranPage> {
                   ),
                   child: const Text(
                     "Selesai Absensi",
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white),
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),
@@ -370,12 +482,20 @@ class _DaftarKehadiranPageState extends State<DaftarKehadiranPage> {
         children: [
           Text(
             count,
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: textColor),
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: textColor,
+            ),
           ),
           const SizedBox(height: 4),
           Text(
             label,
-            style: const TextStyle(fontSize: 11, color: Colors.grey, fontWeight: FontWeight.w500),
+            style: const TextStyle(
+              fontSize: 11,
+              color: Colors.grey,
+              fontWeight: FontWeight.w500,
+            ),
             textAlign: TextAlign.center,
           ),
         ],

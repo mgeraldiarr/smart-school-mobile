@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 
-import '../constants/app_colors.dart';
+import '../../../core/constants/app_colors.dart';
 
-class RekapKehadiranWaliMurid extends StatefulWidget {
-  const RekapKehadiranWaliMurid({super.key});
+class ParentAttendanceScreen extends StatefulWidget {
+  const ParentAttendanceScreen({super.key});
 
   @override
-  State<RekapKehadiranWaliMurid> createState() =>
-      _RekapKehadiranWaliMuridState();
+  State<ParentAttendanceScreen> createState() => _ParentAttendanceScreenState();
 }
 
-class _RekapKehadiranWaliMuridState extends State<RekapKehadiranWaliMurid> {
+class _ParentAttendanceScreenState extends State<ParentAttendanceScreen> {
   String _selectedPeriod = 'Bulan ini';
 
   final List<Map<String, String>> _history = [
@@ -58,7 +57,7 @@ class _RekapKehadiranWaliMuridState extends State<RekapKehadiranWaliMurid> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: pageBackground,
+      backgroundColor: AppColors.pageBackground,
       body: SafeArea(
         child: Column(
           children: [
@@ -76,7 +75,7 @@ class _RekapKehadiranWaliMuridState extends State<RekapKehadiranWaliMurid> {
                   const Text(
                     'Riwayat Kehadiran',
                     style: TextStyle(
-                      color: textDark,
+                      color: AppColors.slateText,
                       fontSize: 21,
                       fontWeight: FontWeight.w800,
                     ),
@@ -88,7 +87,10 @@ class _RekapKehadiranWaliMuridState extends State<RekapKehadiranWaliMurid> {
                       child: Center(
                         child: Text(
                           'Belum ada riwayat kehadiran',
-                          style: TextStyle(color: textMuted, fontSize: 13),
+                          style: TextStyle(
+                            color: AppColors.slateMuted,
+                            fontSize: 13,
+                          ),
                         ),
                       ),
                     )
@@ -115,7 +117,9 @@ class _RekapKehadiranWaliMuridState extends State<RekapKehadiranWaliMurid> {
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border(
-          bottom: BorderSide(color: borderColor.withValues(alpha: 0.7)),
+          bottom: BorderSide(
+            color: AppColors.softBorder.withValues(alpha: 0.7),
+          ),
         ),
       ),
       child: const Column(
@@ -124,7 +128,7 @@ class _RekapKehadiranWaliMuridState extends State<RekapKehadiranWaliMurid> {
           Text(
             'Rekap Kehadiran',
             style: TextStyle(
-              color: textDark,
+              color: AppColors.slateText,
               fontSize: 27,
               fontWeight: FontWeight.w800,
             ),
@@ -132,7 +136,7 @@ class _RekapKehadiranWaliMuridState extends State<RekapKehadiranWaliMurid> {
           SizedBox(height: 8),
           Text(
             'Ahmad Rizki • Kelas 8A',
-            style: TextStyle(color: textMuted, fontSize: 14),
+            style: TextStyle(color: AppColors.slateMuted, fontSize: 14),
           ),
         ],
       ),
@@ -247,7 +251,7 @@ class _RekapKehadiranWaliMuridState extends State<RekapKehadiranWaliMurid> {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: borderColor, width: 1.5),
+          border: Border.all(color: AppColors.softBorder, width: 1.5),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -256,13 +260,16 @@ class _RekapKehadiranWaliMuridState extends State<RekapKehadiranWaliMurid> {
             Text(
               value,
               style: const TextStyle(
-                color: primaryBlue,
+                color: AppColors.accentBlue,
                 fontSize: 23,
                 fontWeight: FontWeight.w800,
               ),
             ),
             const SizedBox(height: 4),
-            Text(label, style: const TextStyle(color: textMuted, fontSize: 11)),
+            Text(
+              label,
+              style: const TextStyle(color: AppColors.slateMuted, fontSize: 11),
+            ),
           ],
         ),
       ),
@@ -309,7 +316,9 @@ class _RekapKehadiranWaliMuridState extends State<RekapKehadiranWaliMurid> {
                   period,
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: selected ? primaryBlue : textMuted,
+                    color: selected
+                        ? AppColors.accentBlue
+                        : AppColors.slateMuted,
                     fontSize: 12,
                     fontWeight: selected ? FontWeight.w800 : FontWeight.w500,
                   ),
@@ -328,12 +337,12 @@ class _RekapKehadiranWaliMuridState extends State<RekapKehadiranWaliMurid> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(22),
-        border: Border.all(color: borderColor, width: 1.5),
+        border: Border.all(color: AppColors.softBorder, width: 1.5),
       ),
       clipBehavior: Clip.antiAlias,
       child: Row(
         children: [
-          Container(width: 5, height: 72, color: green),
+          Container(width: 5, height: 72, color: AppColors.emerald),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(17, 14, 8, 14),
@@ -345,7 +354,7 @@ class _RekapKehadiranWaliMuridState extends State<RekapKehadiranWaliMurid> {
                   Text(
                     item['subject'] ?? '',
                     style: const TextStyle(
-                      color: textDark,
+                      color: AppColors.slateText,
                       fontSize: 14,
                       fontWeight: FontWeight.w800,
                     ),
@@ -353,7 +362,10 @@ class _RekapKehadiranWaliMuridState extends State<RekapKehadiranWaliMurid> {
                   const SizedBox(height: 6),
                   Text(
                     '${item['date'] ?? ''} • ${item['time'] ?? ''}',
-                    style: const TextStyle(color: textMuted, fontSize: 10),
+                    style: const TextStyle(
+                      color: AppColors.slateMuted,
+                      fontSize: 10,
+                    ),
                   ),
                 ],
               ),

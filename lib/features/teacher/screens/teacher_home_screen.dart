@@ -3,8 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../core/constants/app_colors.dart';
-import '../../../page12/jadwal_pelajaran.dart';
-import '../../../page13/nilai_siswa_page.dart';
+import 'teacher_schedule_screen.dart';
+import 'student_grades_screen.dart';
 import 'teacher_dashboard_screen.dart';
 import 'teacher_profile_screen.dart';
 
@@ -34,10 +34,11 @@ class _TeacherHomeScreenState extends State<TeacherHomeScreen> {
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       // Header Beranda & Profil berwarna biru, tab lain berlatar terang
-      value: (hasBlueHeader
-              ? SystemUiOverlayStyle.light
-              : SystemUiOverlayStyle.dark)
-          .copyWith(statusBarColor: Colors.transparent),
+      value:
+          (hasBlueHeader
+                  ? SystemUiOverlayStyle.light
+                  : SystemUiOverlayStyle.dark)
+              .copyWith(statusBarColor: Colors.transparent),
       child: Scaffold(
         backgroundColor: const Color(0xFFF4F7FC),
         body: IndexedStack(
@@ -47,8 +48,8 @@ class _TeacherHomeScreenState extends State<TeacherHomeScreen> {
               onSeeAllSchedules: () =>
                   setState(() => _currentIndex = _scheduleTab),
             ),
-            const JadwalPelajaranPage(showBottomNav: false),
-            const NilaiSiswaPage(showBottomNav: false),
+            const TeacherScheduleScreen(),
+            const StudentGradesScreen(),
             const TeacherProfileScreen(),
           ],
         ),

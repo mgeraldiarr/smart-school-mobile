@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
-import '../page11/daftar_kehadiran.dart';
-import 'pemindai_wajah.dart';
-import 'teacher/models/teacher_schedule.dart';
+import 'attendance_list_screen.dart';
+import 'face_scan_screen.dart';
+import '../../teacher/models/teacher_schedule.dart';
 
 // CLASS HALAMAN ABSENSI BERHASIL
-class AbsensiBerhasilPage extends StatelessWidget {
+class AttendanceSuccessScreen extends StatelessWidget {
   final TeacherSchedule schedule;
 
-  const AbsensiBerhasilPage({super.key, required this.schedule});
+  const AttendanceSuccessScreen({super.key, required this.schedule});
 
   // FUNGSI UNTUK MENAMPILKAN PESAN NOTIFIKASI
   void tampilkanPesan(BuildContext context, String pesan) {
@@ -179,7 +179,7 @@ class AbsensiBerhasilPage extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) =>
-                            PemindaiWajahPage(schedule: schedule),
+                            FaceScanScreen(schedule: schedule),
                       ),
                     );
                   },
@@ -220,7 +220,7 @@ class AbsensiBerhasilPage extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const DaftarKehadiranPage(),
+                        builder: (context) => const AttendanceListScreen(),
                       ),
                     );
                   },

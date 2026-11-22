@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import 'pemindai_wajah.dart';
-import 'teacher/models/teacher_schedule.dart';
+import 'face_scan_screen.dart';
+import '../../teacher/models/teacher_schedule.dart';
 
 // CLASS HALAMAN KONFIRMASI MENGAJAR
-class KonfirmasiMengajarPage extends StatelessWidget {
+class TeachingConfirmationScreen extends StatelessWidget {
   final TeacherSchedule schedule;
 
-  const KonfirmasiMengajarPage({super.key, required this.schedule});
+  const TeachingConfirmationScreen({super.key, required this.schedule});
 
   // WIDGET UNTUK MENAMPILKAN BARIS DETAIL JADWAL
   Widget detailRow(String label, String value, {bool last = false}) {
@@ -43,7 +43,10 @@ class KonfirmasiMengajarPage extends StatelessWidget {
   // FUNGSI UNTUK MEMBANGUN HALAMAN
   @override
   Widget build(BuildContext context) {
-    final today = DateFormat('EEEE, d MMMM yyyy', 'id_ID').format(DateTime.now());
+    final today = DateFormat(
+      'EEEE, d MMMM yyyy',
+      'id_ID',
+    ).format(DateTime.now());
 
     return Scaffold(
       backgroundColor: const Color(0xFFF5F9FF),
@@ -160,11 +163,7 @@ class KonfirmasiMengajarPage extends StatelessWidget {
                           detailRow('Mata Pelajaran', schedule.subjectName),
                           detailRow('Kelas', schedule.className),
                           detailRow('Jam', schedule.timeRange),
-                          detailRow(
-                            'Tanggal',
-                            today,
-                            last: true,
-                          ),
+                          detailRow('Tanggal', today, last: true),
                         ],
                       ),
                     ),
@@ -210,7 +209,7 @@ class KonfirmasiMengajarPage extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                                  PemindaiWajahPage(schedule: schedule),
+                                  FaceScanScreen(schedule: schedule),
                             ),
                           );
                         },

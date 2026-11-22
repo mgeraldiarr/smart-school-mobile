@@ -49,6 +49,10 @@ dependencies:
   google_mlkit_face_detection: ^0.12.0
   audioplayers: ^6.1.0
 
+  # foto profil (pilih dari kamera/galeri & simpan permanen di perangkat)
+  image_picker: ^1.2.4
+  path_provider: ^2.1.6
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

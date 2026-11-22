@@ -24,4 +24,14 @@ class AppColors {
   static const Color textDark = Color(0xFF0F172A); // Judul / Text Utama
   static const Color textMuted = Color(0xFF64748B); // Subtitle / Label
   static const Color border = Color(0xFFE2E8F0); // Garis Pembatas
+
+  // Palet halaman wali murid & input nilai (desain Figma versi terbaru).
+  // TODO(design): samakan dengan palet utama di atas setelah disepakati tim.
+  static const Color accentBlue = Color(0xFF1768C5);
+  static const Color accentBlueBright = Color(0xFF258FE3);
+  static const Color pageBackground = Color(0xFFF4F8FF);
+  static const Color slateText = Color(0xFF1D2939);
+  static const Color slateMuted = Color(0xFF7588A5);
+  static const Color softBorder = Color(0xFFDDE7F5);
+  static const Color emerald = Color(0xFF159B72);
 }
