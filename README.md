@@ -119,44 +119,7 @@ flowchart TD
 
 Proyek ini menggunakan struktur modular terpisah agar pengerjaan bersih, terisolasi, dan mudah dibagi tugas dalam kelompok:
 
-```text
-D:\PROJECT\-Muhammad_Geraldi_Arisyi_kelompok-7_kh002\
-│
-├── backend/                       📁 [Backend REST API & Web Admin]
-│   ├── app/
-│   │   ├── Http/Controllers/Api/  -> Auth, Attendance, Grade, ForgotPassword Controller
-│   │   ├── Models/                -> User, Teacher, Parent, Student, Schedule, Grade, dll.
-│   │   └── Imports/               -> Skrip Import Excel Siswa & Guru
-│   ├── database/
-│   │   ├── migrations/            -> 11 File Migrasi Tabel MySQL
-│   │   └── seeders/               -> Data Dummy Sampel Realistis
-│   ├── routes/
-│   │   └── api.php                -> Kontrak Jalur REST API
-│   ├── composer.json
-│   └── .env                       -> Konfigurasi Database & Gmail SMTP
-│
-├── mobile/                        📁 [Aplikasi Mobile Flutter - Smart School]
-│   ├── lib/
-│   │   ├── core/constants/        -> URL API & Theme Colors (Smart School Blue)
-│   │   ├── core/services/         -> Face Detection (ML Kit) & Audio Feedback
-│   │   ├── features/auth/         -> Layar Login NUPTK/NIS & Dialog OTP
-│   │   ├── features/guru/         -> Layar Face Scan, Presensi Manual & Input Nilai
-│   │   └── features/ortu/         -> Layar Dashboard Live Status & Kartu Nilai
-│   ├── assets/
-│   │   ├── images/                -> Logo Smart School & Ilustrasi
-│   │   └── models/                -> Model AI Wajah MobileFaceNet (.tflite)
-│   └── pubspec.yaml
-│
-├── docs/                          📁 [Dokumen Rekayasa Perangkat Lunak]
-│   ├── PRD_SISTEM_ABSENSI_WAJAH.md
-│   ├── ARSITEKTUR_SISTEM_ABSENSI_WAJAH.md
-│   ├── UX_DESIGN_SPECIFICATION.md
-│   └── IMPLEMENTATION_PLAN_FASE.md
-│
-└── README.md                      📄 Petunjuk & Dokumentasi Utama
-```
-
----
+COMMING SOON
 
 ## 🗺️ 6. Peta Jalan Pengerjaan (5 Fase)
 
