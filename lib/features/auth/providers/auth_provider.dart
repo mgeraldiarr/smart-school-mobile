@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
@@ -18,9 +20,10 @@ class AuthProvider extends ChangeNotifier {
   String? get userRole => _userRole;
   bool get isAuthenticated => _userData != null;
 
-  // Respons login menyimpan profil di 'teacher', sedangkan /auth/me di 'profile'
+  // Respons login menyimpan profil di 'teacher', sedangkan /auth/me di 'profile'.
+  // 'profile' didahulukan karena selalu berasal dari data server terbaru.
   Map<String, dynamic>? get teacherProfile =>
-      (_userData?['teacher'] ?? _userData?['profile']) as Map<String, dynamic>?;
+      (_userData?['profile'] ?? _userData?['teacher']) as Map<String, dynamic>?;
 
   void _setLoading(bool value) {
     _isLoading = value;
@@ -53,6 +56,7 @@ class AuthProvider extends ChangeNotifier {
         final token = data['token'];
 
         await _apiService.saveSession(token: token, role: 'teacher');
+        await _apiService.saveUserData(data);
         _userData = data;
         _userRole = 'teacher';
 
@@ -92,6 +96,7 @@ class AuthProvider extends ChangeNotifier {
         final token = data['token'];
 
         await _apiService.saveSession(token: token, role: 'parent');
+        await _apiService.saveUserData(data);
         _userData = data;
         _userRole = 'parent';
 
@@ -113,6 +118,8 @@ class AuthProvider extends ChangeNotifier {
   // ==========================================
   // 3. CEK SESI LOGIN (AUTO LOGIN SAAT BUKA APLIKASI)
   // ==========================================
+  // Sesi hanya berakhir bila pengguna menekan Keluar atau server menolak token
+  // (401). Gangguan jaringan tidak memaksa pengguna login ulang.
   Future<bool> tryAutoLogin() async {
     final token = await _apiService.getToken();
     final role = await _apiService.getUserRole();
@@ -122,18 +129,41 @@ class AuthProvider extends ChangeNotifier {
     }
 
     try {
-      final response = await _apiService.get(ApiConstants.me);
-      if (response.statusCode == 200) {
-        _userData = response.data['data'];
-        _userRole = role;
-        notifyListeners();
-        return true;
+      final response = await _apiService
+          .get(ApiConstants.me)
+          .timeout(_autoLoginTimeout);
+      final data = response.data['data'] as Map<String, dynamic>;
+      // /auth/me tidak mengirim profil siswa/guru selengkap respons login,
+      // jadi data lama digabung dengan data terbaru dari server.
+      final cached = await _apiService.getUserData() ?? {};
+      _userData = {...cached, ...data};
+      await _apiService.saveUserData(_userData!);
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 401) {
+        await _apiService.clearSession(); // Token dicabut atau kedaluwarsa.
+        return false;
       }
+      if (!await _restoreCachedUser()) return false;
+    } on TimeoutException {
+      if (!await _restoreCachedUser()) return false;
     } catch (_) {
-      await _apiService.clearSession();
+      // Respons tak terduga (misal halaman error ngrok): tetap pakai cache.
+      if (!await _restoreCachedUser()) return false;
     }
 
-    return false;
+    _userRole = role;
+    notifyListeners();
+    return true;
+  }
+
+  static const _autoLoginTimeout = Duration(seconds: 8);
+
+  /// Pakai data akun tersimpan saat server tidak bisa dihubungi.
+  Future<bool> _restoreCachedUser() async {
+    final cached = await _apiService.getUserData();
+    if (cached == null) return false;
+    _userData = cached;
+    return true;
   }
 
   // ==========================================

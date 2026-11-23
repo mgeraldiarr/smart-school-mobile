@@ -25,11 +25,15 @@ class ParentProfile {
   /// Membaca `AuthProvider.userData`, baik dari respons login maupun `/auth/me`.
   ///
   /// Respons login menyimpan profil di `parent`, sedangkan `/auth/me` di
-  /// `profile` (mengikuti pola `AuthProvider.teacherProfile`).
+  /// `profile`. `profile` didahulukan karena selalu berasal dari server terbaru
+  /// (data login bisa berasal dari cache saat aplikasi dibuka ulang).
   factory ParentProfile.fromUserData(Map<String, dynamic>? data) {
-    final parent = _map(data?['parent']) ?? _map(data?['profile']);
+    final parent = _map(data?['profile']) ?? _map(data?['parent']);
     final user = _map(data?['user']) ?? _map(parent?['user']);
-    final student = _map(data?['student']) ?? _map(parent?['student']);
+    final student = _pickStudent(
+      loginStudent: _map(data?['student']) ?? _map(parent?['student']),
+      linkedStudents: parent?['students'],
+    );
 
     return ParentProfile(
       accountKey:
@@ -52,6 +56,22 @@ class ParentProfile {
           _string(user?['photo_url']),
       student: student == null ? null : LinkedStudent.fromJson(student),
     );
+  }
+
+  /// `/auth/me` mengirim semua anak (`students`), sedangkan login hanya anak
+  /// yang NIS-nya dipakai masuk. Pilih anak yang sama, versi data terbarunya.
+  static Map<String, dynamic>? _pickStudent({
+    required Map<String, dynamic>? loginStudent,
+    required dynamic linkedStudents,
+  }) {
+    final students = linkedStudents is List
+        ? linkedStudents.whereType<Map<String, dynamic>>().toList()
+        : const <Map<String, dynamic>>[];
+    final loginNis = _string(loginStudent?['nis']);
+    for (final s in students) {
+      if (loginNis != null && _string(s['nis']) == loginNis) return s;
+    }
+    return loginStudent ?? (students.isEmpty ? null : students.first);
   }
 
   ParentProfile copyWith({String? fullName, String? email}) {
