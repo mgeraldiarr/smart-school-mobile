@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -9,6 +11,8 @@ class ApiService {
 
   static const String _tokenKey = 'auth_bearer_token';
   static const String _userRoleKey = 'auth_user_role';
+  // Salinan data akun terakhir, agar aplikasi tetap terbuka tanpa internet.
+  static const String _userDataKey = 'auth_user_data';
 
   factory ApiService() {
     return _instance;
@@ -73,10 +77,29 @@ class ApiService {
     return prefs.getString(_userRoleKey);
   }
 
+  Future<void> saveUserData(Map<String, dynamic> data) async {
+    final prefs = await SharedPreferences.getInstance();
+    // Token tidak ikut disimpan di sini; token sudah punya kunci sendiri.
+    final copy = Map<String, dynamic>.of(data)..remove('token');
+    await prefs.setString(_userDataKey, jsonEncode(copy));
+  }
+
+  Future<Map<String, dynamic>?> getUserData() async {
+    final prefs = await SharedPreferences.getInstance();
+    final raw = prefs.getString(_userDataKey);
+    if (raw == null) return null;
+    try {
+      return jsonDecode(raw) as Map<String, dynamic>;
+    } on FormatException {
+      return null; // Data rusak: anggap tidak ada cache.
+    }
+  }
+
   Future<void> clearSession() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove(_tokenKey);
     await prefs.remove(_userRoleKey);
+    await prefs.remove(_userDataKey);
   }
 
   // ==========================================

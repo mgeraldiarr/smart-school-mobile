@@ -30,6 +30,36 @@ void main() {
     expect(profile.student, isNull);
   });
 
+  test('auto-login: data /auth/me terbaru menimpa cache login', () {
+    // Gabungan cache respons login + respons /auth/me (seperti tryAutoLogin).
+    final profile = ParentProfile.fromUserData({
+      'parent': {'id': 3, 'full_name': 'Nama Lama'},
+      'student': {'nis': '20260002', 'full_name': 'Adik', 'class': '7-B'},
+      'user': {'email': 'budi@email.com'},
+      'profile': {
+        'id': 3,
+        'full_name': 'Budi Pratama',
+        'students': [
+          {
+            'nis': '20260001',
+            'full_name': 'Kakak',
+            'school_class': {'name': '9-A'},
+          },
+          {
+            'nis': '20260002',
+            'full_name': 'Adik',
+            'school_class': {'name': '8-A'},
+          },
+        ],
+      },
+    });
+
+    expect(profile.fullName, 'Budi Pratama');
+    // Anak yang sama dengan NIS saat login, dengan kelas terbaru.
+    expect(profile.student?.fullName, 'Adik');
+    expect(profile.student?.className, '8-A');
+  });
+
   test('data kosong memakai fallback netral', () {
     final profile = ParentProfile.fromUserData(null);
     expect(profile.fullName, 'Wali Murid');
