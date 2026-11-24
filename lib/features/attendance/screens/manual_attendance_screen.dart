@@ -126,64 +126,82 @@ class _ManualAttendanceScreenState extends State<ManualAttendanceScreen> {
     }).toList();
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF7F9FC),
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Container(
-            decoration: BoxDecoration(
-              color: const Color(0xFFEBF3FA),
-              borderRadius: BorderRadius.circular(12),
+      backgroundColor: const Color(0xFFF5F8FD),
+      body: Column(
+        children: [
+          Container(
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              border: Border(bottom: BorderSide(color: Color(0xFFE2E8F0))),
             ),
-            child: IconButton(
-              icon: const Icon(
-                Icons.arrow_back_ios_new,
-                color: Color(0xFF1E88E5),
-                size: 18,
+            child: SafeArea(
+              bottom: false,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(20, 14, 20, 16),
+                child: Row(
+                  children: [
+                    Material(
+                      color: const Color(0xFFEAF3FE),
+                      borderRadius: BorderRadius.circular(14),
+                      child: InkWell(
+                        onTap: () => Navigator.of(context).maybePop(),
+                        borderRadius: BorderRadius.circular(14),
+                        child: const SizedBox(
+                          width: 44,
+                          height: 44,
+                          child: Icon(
+                            Icons.chevron_left_rounded,
+                            color: Color(0xFF1A6FCC),
+                            size: 26,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 14),
+                    const Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Absensi Manual",
+                            style: TextStyle(
+                              color: Color(0xFF0F172A),
+                              fontWeight: FontWeight.w700,
+                              fontSize: 19,
+                            ),
+                          ),
+                          SizedBox(height: 2),
+                          Text(
+                            "Matematika • Kelas 8A",
+                            style: TextStyle(
+                              color: Color(0xFF64748B),
+                              fontSize: 12,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              onPressed: () => Navigator.of(context).maybePop(),
             ),
           ),
-        ),
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
-            Text(
-              "Absensi Manual",
-              style: TextStyle(
-                color: Color(0xFF1E293B),
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-              ),
-            ),
-            SizedBox(height: 2),
-            Text(
-              "Matematika • Kelas 8A",
-              style: TextStyle(color: Colors.grey, fontSize: 12),
-            ),
-          ],
-        ),
-      ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16.0,
-                  vertical: 8.0,
-                ),
-                child: Column(
+          Expanded(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
+              child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Card Informasi Kelas
                     Container(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: const Color(0xFF2575FC),
-                        borderRadius: BorderRadius.circular(16),
+                        gradient: const LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [Color(0xFF1560C4), Color(0xFF2B8FEB)],
+                        ),
+                        borderRadius: BorderRadius.circular(18),
                       ),
                       child: Row(
                         children: [
@@ -634,8 +652,7 @@ class _ManualAttendanceScreenState extends State<ManualAttendanceScreen> {
             ),
           ],
         ),
-      ),
-    );
+      );
   }
 
   // Helper Widget Filter Chip

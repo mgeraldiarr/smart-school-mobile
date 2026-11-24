@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../core/constants/app_colors.dart';
+import '../../auth/providers/auth_provider.dart';
+import '../models/parent_profile.dart';
 
 class ParentScheduleScreen extends StatefulWidget {
   const ParentScheduleScreen({super.key});
@@ -90,35 +93,39 @@ class _ParentScheduleScreenState extends State<ParentScheduleScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.pageBackground,
-      body: SafeArea(
-        child: Column(
-          children: [
-            _buildHeader(),
-            Expanded(
-              child: ListView(
-                padding: const EdgeInsets.fromLTRB(17, 24, 17, 20),
-                children: [
-                  _buildDaySelector(),
-                  const SizedBox(height: 20),
-                  ..._schedule.map(
-                    (item) => Padding(
-                      padding: const EdgeInsets.only(bottom: 14),
-                      child: _buildScheduleItem(item),
-                    ),
+      body: Column(
+        children: [
+          _buildHeader(),
+          Expanded(
+            child: ListView(
+              padding: const EdgeInsets.fromLTRB(20, 20, 20, 24),
+              children: [
+                _buildDaySelector(),
+                const SizedBox(height: 20),
+                ..._schedule.map(
+                  (item) => Padding(
+                    padding: const EdgeInsets.only(bottom: 14),
+                    child: _buildScheduleItem(item),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 
   Widget _buildHeader() {
+    final userData = context.watch<AuthProvider>().userData;
+    final student = ParentProfile.fromUserData(userData).student;
+    final className =
+        (student != null && student.className != '-')
+        ? student.className.replaceAll('-', '')
+        : '8A';
+
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(22, 22, 22, 18),
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border(
@@ -127,23 +134,32 @@ class _ParentScheduleScreenState extends State<ParentScheduleScreen> {
           ),
         ),
       ),
-      child: const Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Jadwal Pelajaran',
-            style: TextStyle(
-              color: AppColors.slateText,
-              fontSize: 24,
-              fontWeight: FontWeight.w800,
-            ),
+      child: SafeArea(
+        bottom: false,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Jadwal Pelajaran',
+                style: TextStyle(
+                  color: AppColors.slateText,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                'Kelas $className • Oktober 2026',
+                style: const TextStyle(
+                  color: AppColors.slateMuted,
+                  fontSize: 12.5,
+                ),
+              ),
+            ],
           ),
-          SizedBox(height: 8),
-          Text(
-            'Kelas 8A • Oktober 2026',
-            style: TextStyle(color: AppColors.slateMuted, fontSize: 14),
-          ),
-        ],
+        ),
       ),
     );
   }

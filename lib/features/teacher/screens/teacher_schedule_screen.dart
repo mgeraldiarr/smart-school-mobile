@@ -137,38 +137,47 @@ class _TeacherScheduleScreenState extends State<TeacherScheduleScreen> {
     final currentDayData = _weeklySchedules[_selectedDayIndex];
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF7F9FC),
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 16, 20, 12),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Text(
-                    "Jadwal Pelajaran",
-                    style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF1E293B),
+      backgroundColor: const Color(0xFFF5F8FD),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: double.infinity,
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              border: Border(bottom: BorderSide(color: Color(0xFFE2E8F0))),
+            ),
+            child: const SafeArea(
+              bottom: false,
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(20, 16, 20, 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Jadwal Pelajaran",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
+                        color: Color(0xFF0F172A),
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 4),
-                  Text(
-                    "Kelas 8A • Oktober 2026",
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: Colors.grey,
-                      fontWeight: FontWeight.w500,
+                    SizedBox(height: 4),
+                    Text(
+                      "Kelas 8A • Oktober 2026",
+                      style: TextStyle(
+                        fontSize: 12.5,
+                        color: Color(0xFF64748B),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-            SizedBox(
-              height: 85,
+          ),
+          const SizedBox(height: 16),
+          SizedBox(
+            height: 85,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -354,7 +363,6 @@ class _TeacherScheduleScreenState extends State<TeacherScheduleScreen> {
             ),
           ],
         ),
-      ),
-    );
+      );
   }
 }

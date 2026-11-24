@@ -49,48 +49,69 @@ class AttendanceVerificationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF4F8FF),
-      body: SafeArea(
-        child: Column(
-          children: [
-            // HEADER HALAMAN
-            Container(
+      backgroundColor: const Color(0xFFF5F8FD),
+      body: Column(
+        children: [
+          // HEADER HALAMAN
+          Container(
+            decoration: const BoxDecoration(
               color: Colors.white,
-              padding: const EdgeInsets.all(18),
-              child: Row(
-                children: [
-                  IconButton(
-                    onPressed: () => Navigator.pop(context),
-                    icon: const Icon(
-                      Icons.arrow_back_ios_new,
-                      color: Color(0xFF1976D2),
+              border: Border(bottom: BorderSide(color: Color(0xFFE2E8F0))),
+            ),
+            child: SafeArea(
+              bottom: false,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(20, 14, 20, 16),
+                child: Row(
+                  children: [
+                    Material(
+                      color: const Color(0xFFEAF3FE),
+                      borderRadius: BorderRadius.circular(14),
+                      child: InkWell(
+                        onTap: () => Navigator.pop(context),
+                        borderRadius: BorderRadius.circular(14),
+                        child: const SizedBox(
+                          width: 44,
+                          height: 44,
+                          child: Icon(
+                            Icons.chevron_left_rounded,
+                            color: Color(0xFF1A6FCC),
+                            size: 26,
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
-                  const Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Verifikasi Kehadiran',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w800,
-                          color: Color(0xFF1D2939),
-                        ),
+                    const SizedBox(width: 14),
+                    const Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Verifikasi Kehadiran',
+                            style: TextStyle(
+                              fontSize: 19,
+                              fontWeight: FontWeight.w700,
+                              color: Color(0xFF0F172A),
+                            ),
+                          ),
+                          SizedBox(height: 2),
+                          Text(
+                            'Periksa kecocokan data siswa',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Color(0xFF64748B),
+                            ),
+                          ),
+                        ],
                       ),
-                      Text(
-                        'Periksa kecocokan data siswa',
-                        style: TextStyle(
-                          fontSize: 10,
-                          color: Color(0xFF71829D),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+                    ),
+                  ],
+                ),
               ),
             ),
+          ),
 
-            // KONTEN HALAMAN
+          // KONTEN HALAMAN
             Expanded(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.fromLTRB(20, 24, 20, 24),
@@ -337,7 +358,6 @@ class AttendanceVerificationScreen extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
+      );
   }
 }

@@ -37,7 +37,7 @@ class SmartSchoolApp extends StatelessWidget {
             secondary: AppColors.primaryBlue,
             surface: AppColors.surface,
           ),
-          textTheme: GoogleFonts.interTextTheme(Theme.of(context).textTheme),
+          textTheme: GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme),
           appBarTheme: const AppBarTheme(
             backgroundColor: Colors.white,
             elevation: 0,

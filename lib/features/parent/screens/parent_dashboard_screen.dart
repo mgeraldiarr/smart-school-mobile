@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 import '../../../core/constants/app_colors.dart';
+import '../../auth/providers/auth_provider.dart';
+import '../models/parent_profile.dart';
 
 class ParentDashboardScreen extends StatelessWidget {
   final VoidCallback? onOpenAttendance;
@@ -16,29 +20,52 @@ class ParentDashboardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userData = context.watch<AuthProvider>().userData;
+    final profile = ParentProfile.fromUserData(userData);
+    final student = profile.student;
+    final studentName =
+        (student != null && student.fullName != '-')
+        ? student.fullName
+        : 'Ahmad Rizki';
+    final rawClass =
+        (student != null && student.className != '-')
+        ? student.className.replaceAll('-', '')
+        : '8A';
+    final studentNis =
+        (student != null && student.nis != '-') ? student.nis : '20260001';
+
     return CustomScrollView(
       physics: const BouncingScrollPhysics(),
       slivers: [
-        SliverToBoxAdapter(child: _header()),
-        SliverToBoxAdapter(child: _studentCard()),
+        SliverToBoxAdapter(child: _header(context)),
+        SliverToBoxAdapter(
+          child: _studentCard(
+            studentName: studentName,
+            className: rawClass,
+            nis: studentNis,
+          ),
+        ),
         SliverToBoxAdapter(
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(18, 18, 18, 20),
+            padding: const EdgeInsets.fromLTRB(20, 8, 20, 28),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                Text(
                   'Ringkasan Akademik',
-                  style: TextStyle(
-                    fontSize: 21,
-                    fontWeight: FontWeight.w800,
-                    color: AppColors.slateText,
+                  style: GoogleFonts.poppins(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.textDark,
                   ),
                 ),
-                const SizedBox(height: 5),
-                const Text(
+                const SizedBox(height: 2),
+                Text(
                   'Semester Ganjil 2026/2027',
-                  style: TextStyle(fontSize: 14, color: AppColors.slateMuted),
+                  style: GoogleFonts.poppins(
+                    fontSize: 12,
+                    color: AppColors.textMuted,
+                  ),
                 ),
                 const SizedBox(height: 14),
                 Row(
@@ -50,88 +77,120 @@ class ParentDashboardScreen extends StatelessWidget {
                         label: 'Rekap Kehadiran',
                         detail: '40 dari 44 pertemuan',
                         colors: const [
-                          AppColors.accentBlue,
-                          AppColors.accentBlueBright,
+                          Color(0xFF1560C4),
+                          Color(0xFF2B8FEB),
                         ],
+                        onTap: onOpenAttendance,
                       ),
                     ),
-                    const SizedBox(width: 14),
+                    const SizedBox(width: 12),
                     Expanded(
                       child: _summaryCard(
                         icon: Icons.bookmark_added_outlined,
                         value: '87,3',
                         label: 'Rata-rata Nilai',
                         detail: 'Predikat A • Sangat Baik',
-                        colors: const [Color(0xFF159675), Color(0xFF27B989)],
+                        colors: const [
+                          Color(0xFF138A68),
+                          Color(0xFF22B083),
+                        ],
                       ),
                     ),
                   ],
                 ),
                 const SizedBox(height: 24),
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Expanded(
-                      child: Text(
-                        'Mata Pelajaran Selanjutnya',
-                        style: TextStyle(
-                          fontSize: 19,
-                          fontWeight: FontWeight.w800,
-                          color: AppColors.slateText,
-                        ),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Mata Pelajaran Selanjutnya',
+                            style: GoogleFonts.poppins(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.textDark,
+                            ),
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            'Dimulai dalam 30 menit',
+                            style: GoogleFonts.poppins(
+                              fontSize: 12,
+                              color: AppColors.textMuted,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    GestureDetector(
-                      onTap: onOpenSchedule,
-                      child: const Text(
+                    TextButton(
+                      onPressed: onOpenSchedule,
+                      style: TextButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(horizontal: 4),
+                        minimumSize: Size.zero,
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      ),
+                      child: Text(
                         'Jadwal lengkap',
-                        style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.accentBlue,
+                        style: GoogleFonts.poppins(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.brandBlue,
                         ),
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 5),
-                const Text(
-                  'Dimulai dalam 30 menit',
-                  style: TextStyle(fontSize: 14, color: AppColors.slateMuted),
-                ),
-                const SizedBox(height: 18),
+                const SizedBox(height: 14),
                 _nextLesson(),
                 const SizedBox(height: 24),
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Expanded(
-                      child: Text(
-                        'Kehadiran Terbaru',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w800,
-                          color: AppColors.slateText,
-                        ),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Kehadiran Terbaru',
+                            style: GoogleFonts.poppins(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.textDark,
+                            ),
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            'Hari ini',
+                            style: GoogleFonts.poppins(
+                              fontSize: 12,
+                              color: AppColors.textMuted,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    GestureDetector(
-                      onTap: onOpenAttendance,
-                      child: const Text(
+                    TextButton(
+                      onPressed: onOpenAttendance,
+                      style: TextButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(horizontal: 4),
+                        minimumSize: Size.zero,
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      ),
+                      child: Text(
                         'Lihat semua',
-                        style: TextStyle(
-                          color: AppColors.accentBlue,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 13,
+                        style: GoogleFonts.poppins(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.brandBlue,
                         ),
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 5),
-                const Text(
-                  'Hari ini',
-                  style: TextStyle(fontSize: 14, color: AppColors.slateMuted),
-                ),
-                const SizedBox(height: 17),
+                const SizedBox(height: 14),
                 _recentAttendance(),
               ],
             ),
@@ -141,20 +200,18 @@ class ParentDashboardScreen extends StatelessWidget {
     );
   }
 
-  Widget _header() {
+  Widget _header(BuildContext context) {
+    final topInset = MediaQuery.paddingOf(context).top;
+
     return Container(
-      height: 195,
-      padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
+      padding: EdgeInsets.fromLTRB(20, topInset + 16, 20, 24),
       decoration: const BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [Color(0xFF1767BE), Color(0xFF258FE5)],
+          colors: [Color(0xFF1560C4), Color(0xFF2B8FEB)],
         ),
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(40),
-          bottomRight: Radius.circular(40),
-        ),
+        borderRadius: BorderRadius.vertical(bottom: Radius.circular(28)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -163,43 +220,64 @@ class ParentDashboardScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               _headerIcon(Icons.school_outlined, isLogo: true),
-              GestureDetector(
-                onTap: onOpenNotifications,
-                child: Stack(
-                  clipBehavior: Clip.none,
-                  children: [
-                    _headerIcon(Icons.notifications_none_rounded),
-                    Positioned(
-                      top: 9,
-                      right: 9,
-                      child: Container(
-                        width: 9,
-                        height: 9,
-                        decoration: const BoxDecoration(
-                          color: Color(0xFFFFB547),
-                          shape: BoxShape.circle,
+              Material(
+                color: Colors.white.withValues(alpha: 0.18),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  side: BorderSide(
+                    color: Colors.white.withValues(alpha: 0.3),
+                  ),
+                ),
+                child: InkWell(
+                  onTap: onOpenNotifications,
+                  borderRadius: BorderRadius.circular(12),
+                  child: SizedBox(
+                    width: 40,
+                    height: 40,
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        const Icon(
+                          Icons.notifications_none_rounded,
+                          color: Colors.white,
+                          size: 22,
                         ),
-                      ),
+                        Positioned(
+                          top: 9,
+                          right: 9,
+                          child: Container(
+                            width: 8,
+                            height: 8,
+                            decoration: const BoxDecoration(
+                              color: Color(0xFFFFB547),
+                              shape: BoxShape.circle,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 20),
-          const Text(
+          const SizedBox(height: 24),
+          Text(
             'Selamat Datang, Bapak/Ibu',
-            style: TextStyle(
+            style: GoogleFonts.poppins(
               color: Colors.white,
-              fontSize: 21,
-              fontWeight: FontWeight.w800,
-              letterSpacing: -0.5,
+              fontSize: 20,
+              fontWeight: FontWeight.w700,
+              height: 1.3,
             ),
           ),
-          const SizedBox(height: 9),
-          const Text(
+          const SizedBox(height: 4),
+          Text(
             'Pantau perkembangan belajar buah hati Anda.',
-            style: TextStyle(color: Color(0xFFE4F0FF), fontSize: 14),
+            style: GoogleFonts.poppins(
+              color: Colors.white.withValues(alpha: 0.85),
+              fontSize: 12.5,
+            ),
           ),
         ],
       ),
@@ -208,91 +286,95 @@ class ParentDashboardScreen extends StatelessWidget {
 
   Widget _headerIcon(IconData icon, {bool isLogo = false}) {
     return Container(
-      width: 44,
-      height: 44,
+      width: 40,
+      height: 40,
       decoration: BoxDecoration(
-        color: isLogo ? Colors.white : Colors.white.withValues(alpha: 0.17),
-        borderRadius: BorderRadius.circular(17),
+        color: isLogo ? Colors.white : Colors.white.withValues(alpha: 0.18),
+        borderRadius: BorderRadius.circular(12),
         border: isLogo
             ? null
             : Border.all(color: Colors.white.withValues(alpha: 0.3)),
       ),
       child: Icon(
         icon,
-        size: 29,
-        color: isLogo ? AppColors.accentBlue : Colors.white,
+        size: 24,
+        color: isLogo ? AppColors.brandBlue : Colors.white,
       ),
     );
   }
 
-  Widget _studentCard() {
-    return Transform.translate(
-      offset: const Offset(0, -4),
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 24),
-        padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(25),
-          border: Border.all(color: AppColors.softBorder),
-          boxShadow: [
-            BoxShadow(
-              color: const Color(0xFF416A9B).withValues(alpha: 0.08),
-              blurRadius: 25,
-              offset: const Offset(0, 9),
+  Widget _studentCard({
+    required String studentName,
+    required String className,
+    required String nis,
+  }) {
+    return Container(
+      margin: const EdgeInsets.fromLTRB(20, 18, 20, 12),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: AppColors.border),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF0F172A).withValues(alpha: 0.05),
+            blurRadius: 16,
+            offset: const Offset(0, 6),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 54,
+            height: 54,
+            decoration: BoxDecoration(
+              color: const Color(0xFFEAF3FE),
+              borderRadius: BorderRadius.circular(16),
             ),
-          ],
-        ),
-        child: Row(
-          children: [
-            Container(
-              width: 62,
-              height: 64,
-              decoration: BoxDecoration(
-                color: const Color(0xFFE0EEFF),
-                borderRadius: BorderRadius.circular(19),
-              ),
-              child: const Icon(
-                Icons.person_rounded,
-                color: AppColors.accentBlue,
-                size: 40,
-              ),
+            child: const Icon(
+              Icons.person_rounded,
+              color: AppColors.brandBlue,
+              size: 30,
             ),
-            const SizedBox(width: 14),
-            const Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'PUTRA ANDA',
-                    style: TextStyle(
-                      color: AppColors.accentBlue,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: 1.2,
-                    ),
+          ),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'PUTRA/PUTRI ANDA',
+                  style: GoogleFonts.poppins(
+                    color: AppColors.brandBlue,
+                    fontSize: 10.5,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 0.8,
                   ),
-                  SizedBox(height: 6),
-                  Text(
-                    'Ahmad Rizki',
-                    style: TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.w800,
-                      color: AppColors.slateText,
-                    ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  studentName,
+                  style: GoogleFonts.poppins(
+                    fontSize: 15.5,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.textDark,
                   ),
-                  SizedBox(height: 6),
-                  Text(
-                    'Kelas 8A • NIS 20260001',
-                    style: TextStyle(fontSize: 11, color: AppColors.slateMuted),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  'Kelas $className • NIS $nis',
+                  style: GoogleFonts.poppins(
+                    fontSize: 11.5,
+                    color: AppColors.textMuted,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-            const SizedBox(width: 4),
-            _statusChip('Hadir'),
-          ],
-        ),
+          ),
+          const SizedBox(width: 8),
+          _statusChip('Hadir'),
+        ],
       ),
     );
   }
@@ -303,137 +385,148 @@ class ParentDashboardScreen extends StatelessWidget {
     required String label,
     required String detail,
     required List<Color> colors,
+    VoidCallback? onTap,
   }) {
-    return Container(
-      height: 145,
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: colors,
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(20),
+        child: Ink(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: colors,
+            ),
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: colors.first.withValues(alpha: 0.16),
+                blurRadius: 14,
+                offset: const Offset(0, 6),
+              ),
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                width: 36,
+                height: 36,
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.18),
+                  borderRadius: BorderRadius.circular(11),
+                ),
+                child: Icon(icon, color: Colors.white, size: 20),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                value,
+                style: GoogleFonts.poppins(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.w800,
+                  height: 1.1,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                label,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: GoogleFonts.poppins(
+                  color: Colors.white,
+                  fontSize: 12.5,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              const SizedBox(height: 2),
+              Text(
+                detail,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: GoogleFonts.poppins(
+                  color: Colors.white.withValues(alpha: 0.85),
+                  fontSize: 10.5,
+                ),
+              ),
+            ],
+          ),
         ),
-        borderRadius: BorderRadius.circular(24),
-        boxShadow: [
-          BoxShadow(
-            color: colors.first.withValues(alpha: 0.16),
-            blurRadius: 16,
-            offset: const Offset(0, 8),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: 34,
-            height: 34,
-            decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.19),
-              borderRadius: BorderRadius.circular(13),
-            ),
-            child: Icon(icon, color: Colors.white, size: 21),
-          ),
-          const Spacer(),
-          Text(
-            value,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 25,
-              fontWeight: FontWeight.w900,
-              letterSpacing: -1,
-            ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            label,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 11,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-          const SizedBox(height: 6),
-          Text(
-            detail,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              color: Colors.white.withValues(alpha: 0.82),
-              fontSize: 8,
-            ),
-          ),
-        ],
       ),
     );
   }
 
   Widget _nextLesson() {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 18),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(23),
-        border: Border.all(color: AppColors.softBorder, width: 1.3),
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: AppColors.border),
       ),
       child: Row(
         children: [
-          const SizedBox(
-            width: 43,
+          SizedBox(
+            width: 44,
             child: Text(
               '10.15',
-              style: TextStyle(
-                color: AppColors.accentBlue,
-                fontSize: 11,
-                fontWeight: FontWeight.w800,
+              style: GoogleFonts.poppins(
+                color: AppColors.brandBlue,
+                fontSize: 12.5,
+                fontWeight: FontWeight.w700,
               ),
             ),
           ),
           Container(
-            width: 5,
-            height: 44,
+            width: 4,
+            height: 42,
             decoration: BoxDecoration(
-              color: const Color(0xFF43A0F5),
-              borderRadius: BorderRadius.circular(10),
+              color: AppColors.brandBlueBright,
+              borderRadius: BorderRadius.circular(4),
             ),
           ),
-          const SizedBox(width: 13),
-          const Expanded(
+          const SizedBox(width: 12),
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   'Bahasa Indonesia',
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w800,
-                    color: AppColors.slateText,
+                  style: GoogleFonts.poppins(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.textDark,
                   ),
                 ),
-                SizedBox(height: 6),
+                const SizedBox(height: 3),
                 Text(
-                  'Pak Budi • Ruang 8A • 10.15 – 11.45',
-                  maxLines: 2,
-                  style: TextStyle(fontSize: 9, color: AppColors.slateMuted),
+                  'Pak Budi • Ruang 8A • 10.15 - 11.45',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: GoogleFonts.poppins(
+                    fontSize: 11.5,
+                    color: AppColors.textMuted,
+                  ),
                 ),
               ],
             ),
           ),
           const SizedBox(width: 8),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
-              color: const Color(0xFFFFF0DC),
-              borderRadius: BorderRadius.circular(24),
+              color: const Color(0xFFFEF0D8),
+              borderRadius: BorderRadius.circular(20),
             ),
-            child: const Text(
+            child: Text(
               'Berikutnya',
-              style: TextStyle(
-                color: Color(0xFFBD6900),
-                fontSize: 10,
-                fontWeight: FontWeight.w800,
+              style: GoogleFonts.poppins(
+                color: const Color(0xFFB45309),
+                fontSize: 11,
+                fontWeight: FontWeight.w600,
               ),
             ),
           ),
@@ -444,44 +537,47 @@ class ParentDashboardScreen extends StatelessWidget {
 
   Widget _recentAttendance() {
     return Container(
-      padding: const EdgeInsets.all(17),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(23),
-        border: Border.all(color: AppColors.softBorder, width: 1.3),
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: AppColors.border),
       ),
       child: Row(
         children: [
           Container(
-            width: 53,
-            height: 57,
+            width: 46,
+            height: 46,
             decoration: BoxDecoration(
-              color: AppColors.accentBlue,
-              borderRadius: BorderRadius.circular(16),
+              color: AppColors.brandBlue,
+              borderRadius: BorderRadius.circular(14),
             ),
             child: const Icon(
               Icons.menu_book_outlined,
               color: Colors.white,
-              size: 28,
+              size: 22,
             ),
           ),
           const SizedBox(width: 14),
-          const Expanded(
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   'Matematika',
-                  style: TextStyle(
-                    color: AppColors.slateText,
+                  style: GoogleFonts.poppins(
+                    color: AppColors.textDark,
                     fontSize: 14,
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.w700,
                   ),
                 ),
-                SizedBox(height: 6),
+                const SizedBox(height: 3),
                 Text(
                   'Pak Ahmad • 07.15 WIB',
-                  style: TextStyle(fontSize: 11, color: AppColors.slateMuted),
+                  style: GoogleFonts.poppins(
+                    fontSize: 11.5,
+                    color: AppColors.textMuted,
+                  ),
                 ),
               ],
             ),
@@ -494,17 +590,17 @@ class ParentDashboardScreen extends StatelessWidget {
 
   Widget _statusChip(String label) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 9),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
-        color: const Color(0xFFE2F7ED),
-        borderRadius: BorderRadius.circular(30),
+        color: const Color(0xFFE4F6EB),
+        borderRadius: BorderRadius.circular(20),
       ),
       child: Text(
         label,
-        style: const TextStyle(
-          color: Color(0xFF11865E),
-          fontSize: 12,
-          fontWeight: FontWeight.w800,
+        style: GoogleFonts.poppins(
+          color: const Color(0xFF1D8F5A),
+          fontSize: 11.5,
+          fontWeight: FontWeight.w700,
         ),
       ),
     );

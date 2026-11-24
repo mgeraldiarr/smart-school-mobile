@@ -88,56 +88,54 @@ class _InputGradeScreenState extends State<InputGradeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.pageBackground,
-      body: SafeArea(
-        child: Column(
-          children: [
-            _Header(onBack: () => Navigator.of(context).maybePop()),
-            Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.fromLTRB(20, 20, 20, 24),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    _StudentCard(grade: widget.grade),
-                    const SizedBox(height: 14),
-                    _SubjectInfoCard(
-                      subject: widget.subject,
-                      semester: widget.semester,
-                    ),
-                    const SizedBox(height: 18),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: _ScoreField(
-                            label: 'Nilai UTS',
-                            controller: _utsController,
-                            onChanged: () => setState(() {}),
-                          ),
+      body: Column(
+        children: [
+          _Header(onBack: () => Navigator.of(context).maybePop()),
+          Expanded(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.fromLTRB(20, 20, 20, 24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  _StudentCard(grade: widget.grade),
+                  const SizedBox(height: 14),
+                  _SubjectInfoCard(
+                    subject: widget.subject,
+                    semester: widget.semester,
+                  ),
+                  const SizedBox(height: 18),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: _ScoreField(
+                          label: 'Nilai UTS',
+                          controller: _utsController,
+                          onChanged: () => setState(() {}),
                         ),
-                        const SizedBox(width: 14),
-                        Expanded(
-                          child: _ScoreField(
-                            label: 'Nilai UAS',
-                            controller: _uasController,
-                            onChanged: () => setState(() {}),
-                          ),
+                      ),
+                      const SizedBox(width: 14),
+                      Expanded(
+                        child: _ScoreField(
+                          label: 'Nilai UAS',
+                          controller: _uasController,
+                          onChanged: () => setState(() {}),
                         ),
-                      ],
-                    ),
-                    const SizedBox(height: 18),
-                    _AverageBanner(uts: _uts, uas: _uas, isValid: _isValid),
-                    const SizedBox(height: 16),
-                    _SaveButton(
-                      enabled: _isValid,
-                      isLoading: _isSaving,
-                      onPressed: _save,
-                    ),
-                  ],
-                ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 18),
+                  _AverageBanner(uts: _uts, uas: _uas, isValid: _isValid),
+                  const SizedBox(height: 16),
+                  _SaveButton(
+                    enabled: _isValid,
+                    isLoading: _isSaving,
+                    onPressed: _save,
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -151,52 +149,58 @@ class _Header extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.fromLTRB(20, 14, 20, 14),
       decoration: const BoxDecoration(
         color: AppColors.surface,
         border: Border(bottom: BorderSide(color: Color(0xFFE6EEF8))),
       ),
-      child: Row(
-        children: [
-          Material(
-            color: _tintBlue,
-            borderRadius: BorderRadius.circular(12),
-            child: InkWell(
-              onTap: onBack,
-              borderRadius: BorderRadius.circular(12),
-              child: const SizedBox(
-                width: 40,
-                height: 40,
-                child: Icon(
-                  Icons.chevron_left_rounded,
-                  color: AppColors.accentBlue,
-                  size: 26,
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(width: 14),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+      child: SafeArea(
+        bottom: false,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(20, 14, 20, 16),
+          child: Row(
             children: [
-              Text(
-                'Input Nilai',
-                style: GoogleFonts.poppins(
-                  fontSize: 19,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.textDark,
+              Material(
+                color: _tintBlue,
+                borderRadius: BorderRadius.circular(14),
+                child: InkWell(
+                  onTap: onBack,
+                  borderRadius: BorderRadius.circular(14),
+                  child: const SizedBox(
+                    width: 44,
+                    height: 44,
+                    child: Icon(
+                      Icons.chevron_left_rounded,
+                      color: AppColors.accentBlue,
+                      size: 26,
+                    ),
+                  ),
                 ),
               ),
-              Text(
-                'Perbarui nilai siswa',
-                style: GoogleFonts.poppins(
-                  fontSize: 11,
-                  color: AppColors.textMuted,
-                ),
+              const SizedBox(width: 14),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Input Nilai',
+                    style: GoogleFonts.poppins(
+                      fontSize: 19,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.textDark,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    'Perbarui nilai siswa',
+                    style: GoogleFonts.poppins(
+                      fontSize: 12,
+                      color: AppColors.textMuted,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
-        ],
+        ),
       ),
     );
   }
