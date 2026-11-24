@@ -52,36 +52,34 @@ class _ParentNotificationScreenState extends State<ParentNotificationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.pageBackground,
-      body: SafeArea(
-        child: Column(
-          children: [
-            _buildHeader(),
-            Expanded(
-              child: ListView(
-                padding: const EdgeInsets.fromLTRB(21, 20, 21, 24),
-                children: [
-                  _buildSectionTitle('HARI INI'),
-                  const SizedBox(height: 12),
-                  ..._todayNotifications.map(
-                    (item) => Padding(
-                      padding: const EdgeInsets.only(bottom: 12),
-                      child: _buildNotificationCard(item, unread: !_allRead),
-                    ),
+      body: Column(
+        children: [
+          _buildHeader(),
+          Expanded(
+            child: ListView(
+              padding: const EdgeInsets.fromLTRB(20, 20, 20, 24),
+              children: [
+                _buildSectionTitle('HARI INI'),
+                const SizedBox(height: 12),
+                ..._todayNotifications.map(
+                  (item) => Padding(
+                    padding: const EdgeInsets.only(bottom: 12),
+                    child: _buildNotificationCard(item, unread: !_allRead),
                   ),
-                  const SizedBox(height: 1),
-                  _buildSectionTitle('KEMARIN'),
-                  const SizedBox(height: 12),
-                  ..._yesterdayNotifications.map(
-                    (item) => Padding(
-                      padding: const EdgeInsets.only(bottom: 12),
-                      child: _buildNotificationCard(item, unread: false),
-                    ),
+                ),
+                const SizedBox(height: 6),
+                _buildSectionTitle('KEMARIN'),
+                const SizedBox(height: 12),
+                ..._yesterdayNotifications.map(
+                  (item) => Padding(
+                    padding: const EdgeInsets.only(bottom: 12),
+                    child: _buildNotificationCard(item, unread: false),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -89,7 +87,6 @@ class _ParentNotificationScreenState extends State<ParentNotificationScreen> {
   Widget _buildHeader() {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(16, 14, 16, 17),
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border(
@@ -98,73 +95,79 @@ class _ParentNotificationScreenState extends State<ParentNotificationScreen> {
           ),
         ),
       ),
-      child: Row(
-        children: [
-          Material(
-            color: const Color(0xFFEDF4FC),
-            borderRadius: BorderRadius.circular(17),
-            child: InkWell(
-              onTap: widget.onBack,
-              borderRadius: BorderRadius.circular(17),
-              child: const SizedBox(
-                width: 44,
-                height: 44,
-                child: Icon(
-                  Icons.chevron_left_rounded,
-                  color: AppColors.accentBlue,
-                  size: 30,
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Pusat Notifikasi',
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    color: AppColors.slateText,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w800,
+      child: SafeArea(
+        bottom: false,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(20, 14, 20, 16),
+          child: Row(
+            children: [
+              Material(
+                color: const Color(0xFFEAF3FE),
+                borderRadius: BorderRadius.circular(14),
+                child: InkWell(
+                  onTap: widget.onBack,
+                  borderRadius: BorderRadius.circular(14),
+                  child: const SizedBox(
+                    width: 44,
+                    height: 44,
+                    child: Icon(
+                      Icons.chevron_left_rounded,
+                      color: AppColors.accentBlue,
+                      size: 26,
+                    ),
                   ),
                 ),
-                const SizedBox(height: 5),
-                Text(
-                  '$_unreadCount notifikasi belum dibaca',
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    color: AppColors.slateMuted,
-                    fontSize: 12,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(width: 8),
-          GestureDetector(
-            onTap: () {
-              setState(() {
-                _allRead = true;
-              });
-            },
-            child: const Padding(
-              padding: EdgeInsets.symmetric(vertical: 8),
-              child: Text(
-                'Tandai dibaca',
-                style: TextStyle(
-                  color: AppColors.accentBlue,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w700,
+              ),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Pusat Notifikasi',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: AppColors.slateText,
+                        fontSize: 19,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      '$_unreadCount notifikasi belum dibaca',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        color: AppColors.slateMuted,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ),
+              const SizedBox(width: 8),
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    _allRead = true;
+                  });
+                },
+                child: const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 8),
+                  child: Text(
+                    'Tandai dibaca',
+                    style: TextStyle(
+                      color: AppColors.accentBlue,
+                      fontSize: 12.5,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 import '../../../core/constants/app_colors.dart';
+import '../../auth/providers/auth_provider.dart';
+import '../models/parent_profile.dart';
 
 /// Academic page UI with fictional grades. No API or authentication changes.
 class ParentAcademicScreen extends StatefulWidget {
@@ -29,47 +32,63 @@ class _ParentAcademicScreenState extends State<ParentAcademicScreen> {
       value.toStringAsFixed(1).replaceAll('.', ',');
 
   @override
-  Widget build(BuildContext context) => Theme(
-    data: Theme.of(context).copyWith(
-      textTheme: GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme),
-    ),
-    child: Scaffold(
-      backgroundColor: AppColors.primaryLight,
-      body: SafeArea(
-        bottom: false,
-        child: ListView(
+  Widget build(BuildContext context) {
+    final userData = context.watch<AuthProvider>().userData;
+    final student = ParentProfile.fromUserData(userData).student;
+    final studentName =
+        (student != null && student.fullName != '-')
+        ? student.fullName
+        : 'Ahmad Rizki';
+    final className =
+        (student != null && student.className != '-')
+        ? student.className.replaceAll('-', '')
+        : '8A';
+
+    return Theme(
+      data: Theme.of(context).copyWith(
+        textTheme: GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme),
+      ),
+      child: Scaffold(
+        backgroundColor: AppColors.pageBackground,
+        body: Column(
           children: [
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.fromLTRB(20, 24, 20, 20),
               decoration: const BoxDecoration(
                 color: AppColors.surface,
                 border: Border(bottom: BorderSide(color: AppColors.border)),
               ),
-              child: const Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Nilai Akademik',
-                    style: TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.textDark,
-                      letterSpacing: -.6,
-                    ),
+              child: SafeArea(
+                bottom: false,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Nilai Akademik',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.textDark,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        '$studentName • Kelas $className',
+                        style: const TextStyle(
+                          color: AppColors.textMuted,
+                          fontSize: 12.5,
+                        ),
+                      ),
+                    ],
                   ),
-                  SizedBox(height: 6),
-                  Text(
-                    'Ahmad Rizki • Kelas 8A',
-                    style: TextStyle(color: AppColors.textMuted, fontSize: 13),
-                  ),
-                ],
+                ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+            Expanded(
+              child: ListView(
+                padding: const EdgeInsets.all(20),
                 children: [
                   _card(
                     child: DropdownButtonFormField<String>(
@@ -183,24 +202,14 @@ class _ParentAcademicScreenState extends State<ParentAcademicScreen> {
                         ),
                       ),
                     ),
-                  const SizedBox(height: 18),
-                  const Text(
-                    'Pratinjau UI • Identitas dan nilai adalah data contoh, '
-                    'belum terhubung API akademik.',
-                    style: TextStyle(
-                      color: AppColors.textMuted,
-                      fontSize: 11,
-                      height: 1.6,
-                    ),
-                  ),
                 ],
               ),
             ),
           ],
         ),
       ),
-    ),
-  );
+    );
+  }
 
   Widget _summary() => Container(
     width: double.infinity,

@@ -48,8 +48,8 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Header tab Profil berwarna biru, jadi ikon status bar dibuat putih
-    final hasBlueHeader = _currentIndex == _profileTab;
+    // Header tab Beranda & Profil berwarna biru, jadi ikon status bar dibuat putih
+    final hasBlueHeader = _currentIndex == 0 || _currentIndex == _profileTab;
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value:

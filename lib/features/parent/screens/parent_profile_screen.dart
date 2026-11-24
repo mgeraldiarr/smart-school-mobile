@@ -123,7 +123,7 @@ class _ParentProfileScreenState extends State<ParentProfileScreen> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.fromLTRB(20, 4, 20, 24),
+          padding: const EdgeInsets.fromLTRB(20, 20, 20, 24),
           child: Column(
             children: [
               _IdentityCard(profile: profile),
